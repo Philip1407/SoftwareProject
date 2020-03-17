@@ -6,7 +6,7 @@
  */
 /*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
 html {
-  font-family: 'Poppins';
+  font-family: 'Ascender Fonts';
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -137,7 +137,7 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: sans-serif;
+  font-family: ascender-fonts;
   font-size: 100%;
   line-height: 1.15;
   margin: 0;
@@ -337,8 +337,8 @@ html {
 }
 
 body {
-  font-family: 'Poppins';
-  font-size: 14px;
+  font-family: 'Ascender Fonts';
+  font-size: 16px;
   font-weight: normal;
   line-height: 1.5;
   color: #292b2c;
@@ -702,7 +702,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: 'Ascender Fonts', monospace;
 }
 
 code {
@@ -5568,7 +5568,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Ascender Fonts', Roboto, "Helvetica Neue", Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
