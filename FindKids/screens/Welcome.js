@@ -236,9 +236,8 @@ class Welcome extends Component {
           </Text>
         </Block>
         <Block center middle>
-          {/* {this.renderIllustrations()}
-          {this.renderSteps()} */}
-          <Text>anh son oi</Text>
+          {this.renderIllustrations()}
+          {this.renderSteps()}     
         </Block>
         <Block middle flex={0.5} margin={[0, theme.sizes.padding * 2]}>
           <Button gradient onPress={() => navigation.navigate("Login")}>
@@ -265,9 +264,9 @@ class Welcome extends Component {
 
 Welcome.defaultProps = {
   illustrations: [
-    // { id: 1, source: require("../assets/images/illustration_1.png") },
-    // { id: 2, source: require("../assets/images/illustration_2.png") },
-    // { id: 3, source: require("../assets/images/illustration_3.png") }
+    { id: 1, source: require("../assets/images/kids1.png") },
+    { id: 2, source: require("../assets/images/kids2.png") },
+    { id: 3, source: require("../assets/images/kids3.png") }
   ]
 };
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { Image } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
@@ -7,6 +8,7 @@ import Login from "../screens/Login";
 import Welcome from "../screens/Welcome";
 import Forgot from "../screens/Forgot";
 import SignUp from "../screens/SignUp";
+import Map from "../screens/Map";
 import { theme } from "../constants";
 
 const screens = createStackNavigator(
@@ -15,6 +17,7 @@ const screens = createStackNavigator(
     Login,
     SignUp,
     Forgot,
+    Map
   },
   {
     defaultNavigationOptions: {
@@ -24,11 +27,12 @@ const screens = createStackNavigator(
         borderBottomColor: "transparent",
         elevation: 0 // for android
       },
-
-      headerBackTitle: null,
+      headerBackImage:()=> <Image source={require("../assets/icons/back.png")} />,
+      headerShown:true,
+      title: null,
       headerLeftContainerStyle: {
         alignItems: "center",
-        marginLeft: theme.sizes.base * 2,
+        marginLeft: theme.sizes.base * 1,
         paddingRight: theme.sizes.base
       },
       headerRightContainerStyle: {
