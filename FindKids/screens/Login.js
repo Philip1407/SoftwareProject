@@ -39,7 +39,7 @@ export default class Login extends Component {
     this.setState({ errors, loading: false });
 
     if (!errors.length) {
-      navigation.navigate("Map");
+      navigation.navigate("Browse");
     }
   }
 
@@ -100,6 +100,7 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
   login: {
     flex: 1,
+    backgroundColor: theme.colors.white,
     justifyContent: "center"
   },
   input: {

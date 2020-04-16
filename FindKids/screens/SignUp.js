@@ -116,7 +116,8 @@ export default class SignUp extends Component {
 const styles = StyleSheet.create({
   signup: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: theme.colors.white,
   },
   input: {
     borderRadius: 0,

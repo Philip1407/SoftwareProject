@@ -222,7 +222,7 @@ class Welcome extends Component {
     const { navigation } = this.props;
 
     return (
-      <Block>
+      <Block style={styles.container}>
         <Block center bottom flex={0.4}>
           <Text h1 center bold>
            Find Kids
@@ -273,16 +273,21 @@ Welcome.defaultProps = {
 export default Welcome;
 
 const styles = StyleSheet.create({
+  container:{
+    backgroundColor: theme.colors.white,
+  },
   stepsContainer: {
     position: "absolute",
     bottom: theme.sizes.base * 3,
     right: 0,
-    left: 0
+    left: 0,
+    
   },
   steps: {
     width: 5,
     height: 5,
     borderRadius: 5,
-    marginHorizontal: 2.5
+    marginHorizontal: 2.5,
+    
   }
 });
