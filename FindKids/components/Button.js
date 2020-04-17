@@ -80,10 +80,13 @@ const styles = StyleSheet.create({
     marginVertical: theme.sizes.padding / 3
   },
   shadow: {
+    borderRadius:theme.sizes.radius,
+    backgroundColor:theme.colors.white,
     shadowColor: theme.colors.black,
-    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 10
+    elevation: 6,
+    shadowRadius: 10 ,
+    shadowOffset : { width: 1, height: 2},
   },
   accent: { backgroundColor: theme.colors.accent },
   primary: { backgroundColor: theme.colors.primary },

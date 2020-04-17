@@ -11,6 +11,8 @@ import SignUp from "../screens/SignUp";
 import Map from "../screens/Map";
 import Browse from "../screens/Browse";
 import Listen from "../screens/Listen";
+import Activities from "../screens/Activities";
+import Settings from "../screens/Settings";
 import { theme } from "../constants";
 
 const screens = createStackNavigator(
@@ -21,7 +23,9 @@ const screens = createStackNavigator(
     Forgot,
     Map,
     Browse,
-    Listen
+    Listen,
+    Activities,
+    Settings
   },
   {
     defaultNavigationOptions: {

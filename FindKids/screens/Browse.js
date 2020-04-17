@@ -9,7 +9,9 @@ import {
 
 import { Card, Badge, Button, Block, Text } from "../components";
 import { theme} from "../constants";
-import logo from './../assets/images/images.png'
+import logoMap from './../assets/icons/logoMap.png'
+import logoListen from './../assets/icons/logoListen.png'
+import logoActivities from './../assets/icons/logoActivities.png'
 import avatar from './../assets/images/avatar.png'
 const { width } = Dimensions.get("window");
 
@@ -38,7 +40,7 @@ class Browse extends Component {
                     margin={[0, 0, 15]}
                     size={50}
                     color="rgba(41,216,143,0.20)">
-                    <Image source={logo} />
+                    <Image source={logoMap} style={styles.img} />
                   </Badge>
                   <Text medium height={20}>
                     MAP
@@ -55,7 +57,7 @@ class Browse extends Component {
                     margin={[0, 0, 15]}
                     size={50}
                     color="rgba(41,216,143,0.20)">
-                    <Image source={logo} />
+                    <Image source={logoListen} style={styles.img} />
                   </Badge>
                   <Text medium height={20}>
                    Listen
@@ -66,16 +68,16 @@ class Browse extends Component {
                 </Card>
               </TouchableOpacity>
               <TouchableOpacity
-               onPress={() => navigation.navigate("Map")}>
+               onPress={() => navigation.navigate("Activities")}>
                 <Card center middle shadow style={styles.category}>
                   <Badge
                     margin={[0, 0, 15]}
                     size={50}
                     color="rgba(41,216,143,0.20)">
-                    <Image source={logo} />
+                    <Image source={logoActivities} style={styles.img} />
                   </Badge>
                   <Text medium height={20}>
-                   Message
+                   Activities
                   </Text>
                   <Text gray caption>
                   follow
@@ -98,6 +100,10 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: theme.sizes.base * 2
+  },
+  img:{
+    height: theme.sizes.base * 2.2,
+    width: theme.sizes.base * 2.2
   },
   avatar: {
     height: theme.sizes.base * 2.2,
