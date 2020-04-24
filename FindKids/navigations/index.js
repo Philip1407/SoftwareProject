@@ -4,7 +4,8 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
 
-import Login from "../screens/Login";
+// import Login from "../screens/Login";
+import Login from "../container/login"
 import Welcome from "../screens/Welcome";
 import Forgot from "../screens/Forgot";
 import SignUp from "../screens/SignUp";

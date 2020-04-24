@@ -20,27 +20,22 @@ export default class Login extends Component {
     loading: false
   };
 
-  handleLogin() {
-    const { navigation } = this.props;
+  handleLogin = async () => {
     const { email, password } = this.state;
+    const { navigation, handleLogin } = this.props;
+    let check = await handleLogin(email, password);
     const errors = [];
-
     Keyboard.dismiss();
     this.setState({ loading: true });
-
     // check with backend API or with some static data
-    if (email !== VALID_EMAIL) {
-      errors.push("email");
-    }
-    if (password !== VALID_PASSWORD) {
-      errors.push("password");
-    }
-
-    this.setState({ errors, loading: false });
-
-    if (!errors.length) {
+    if (check.status === 200) {
       navigation.navigate("Browse");
     }
+    else {
+      errors.push("email");
+      errors.push("password");
+    }
+    this.setState({ errors, loading: false });
   }
 
   render() {
@@ -74,10 +69,10 @@ export default class Login extends Component {
               {loading ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
-                <Text bold white center>
-                  Login
-                </Text>
-              )}
+                  <Text bold white center>
+                    Login
+                  </Text>
+                )}
             </Button>
 
             <Button onPress={() => navigation.navigate("Forgot")}>
