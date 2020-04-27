@@ -37,7 +37,7 @@ export default class Login extends Component {
     }
     this.setState({ errors, loading: false });
   }
-
+  
   render() {
     const { navigation } = this.props;
     const { loading, errors } = this.state;

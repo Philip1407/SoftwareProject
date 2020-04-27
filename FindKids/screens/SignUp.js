@@ -4,7 +4,8 @@ import {
   ActivityIndicator,
   Keyboard,
   KeyboardAvoidingView,
-  StyleSheet
+  StyleSheet,
+  ScrollView
 } from "react-native";
 
 import { Button, Block, Input, Text } from "../components";
@@ -15,26 +16,25 @@ export default class SignUp extends Component {
     email: null,
     username: null,
     password: null,
+    passwordCF:null,
     errors: [],
     loading: false
   };
 
-  handleSignUp() {
-    const { navigation } = this.props;
-    const { email, username, password } = this.state;
+  handleSignUp = async () => {
+    const { navigation, handleSignUp } = this.props;
+    const { email, username, password ,passwordCF} = this.state;
     const errors = [];
-
+    let check = await handleSignUp(email, username, password);
     Keyboard.dismiss();
     this.setState({ loading: true });
-
     // check with backend API or with some static data
     if (!email) errors.push("email");
     if (!username) errors.push("username");
     if (!password) errors.push("password");
-
+    if (password !== passwordCF) errors.push("passwordCF");
     this.setState({ errors, loading: false });
-
-    if (!errors.length) {
+    if (check.status === 200 && !errors.length) {
       Alert.alert(
         "Success!",
         "Your account has been created",
@@ -57,7 +57,9 @@ export default class SignUp extends Component {
     const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
 
     return (
+
       <KeyboardAvoidingView style={styles.signup} behavior="hight">
+        <ScrollView>
         <Block padding={[0, theme.sizes.base * 2]}>
           <Text h1 bold>
             Sign Up
@@ -86,16 +88,23 @@ export default class SignUp extends Component {
               defaultValue={this.state.password}
               onChangeText={text => this.setState({ password: text })}
             />
+            <Input
+              secure
+              label="Password Confirm"
+              error={hasErrors("passwordCF")}
+              style={[styles.input, hasErrors("passwordCF")]}
+              defaultValue={this.state.passwordCF}
+              onChangeText={text => this.setState({ passwordCF: text })}
+            />
             <Button gradient onPress={() => this.handleSignUp()}>
               {loading ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
-                <Text bold white center>
-                  Sign Up
-                </Text>
-              )}
+                  <Text bold white center>
+                    Sign Up
+                  </Text>
+                )}
             </Button>
-
             <Button onPress={() => navigation.navigate("Login")}>
               <Text
                 gray
@@ -108,7 +117,9 @@ export default class SignUp extends Component {
             </Button>
           </Block>
         </Block>
-      </KeyboardAvoidingView>
+   
+        </ScrollView>
+        </KeyboardAvoidingView>
     );
   }
 }

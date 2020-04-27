@@ -10,7 +10,7 @@ import MapView, { Marker, Callout } from "react-native-maps";
 import isEqual from 'lodash/isEqual';
 import * as theme from "../constants/theme";
 import flagPinkImg from '../assets/images/kids1.png';
-
+import Icon from 'react-native-vector-icons/FontAwesome5';
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -26,16 +26,27 @@ class Map extends Component {
                 longitude: null
             },
             poi: null,
+            locationMykids:{
+                latitude: null,
+                longitude: null,
+            }
         };
-        this.onPoiClick = this.onPoiClick.bind(this);
+        // this.onPoiClick = this.onPoiClick.bind(this);
     }
-    onPoiClick(e) {
+    onPoiClick=(e)=> {
         const poi = e.nativeEvent;
-        console.log(e)
         this.setState({
             poi,
         });
     }
+    // onPress=(e)=>{
+    //     const temp = e.nativeEvent;
+    //     this.setState({
+    //         locationMykids:{
+    //             ...temp.coordinate
+    //         }
+    //     })
+    // }
     componentDidMount() {
         if (this.props.coordinate) {
             return;
@@ -81,7 +92,8 @@ class Map extends Component {
         return (
             <View style={styles.container}>
                 <MapView
-                    onPoiClick={this.onPoiClick}
+                    onPoiClick={this.onPoiClick} //lay dia chi khi nhap vao vi tri marker ban do
+                    // onPress={this.onPress} lay dia chi khi nhap vao vi tri bat ky ban do
                     style={styles.map}
                     initialRegion={{
                         ...this.state.region,
@@ -101,16 +113,12 @@ class Map extends Component {
                         </Marker>
                     )}
                     <Marker coordinate={{
-                        latitude: 10.858031507075362,
-                        longitude: 106.74651682376862,
+                       latitude: 10.862035448000977,
+                       longitude: 106.74766380339861,
                         latitudeDelta: 0.03,
                         longitudeDelta: 0.03
                     }}>
-
-                        <Image
-                            source={flagPinkImg}
-                            style={{ height: 30, width: 30 }}
-                        />
+                    <Icon name="map-marker-alt" size={30} color="#900" />
                     </Marker>
                 </MapView>
             </View>
