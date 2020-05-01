@@ -10,7 +10,7 @@ import {
 import { Card, Badge, Button, Block, Text } from "../components";
 import { theme} from "../constants";
 import logoMap from './../assets/icons/logoMap.png'
-import logoListen from './../assets/icons/logoListen.png'
+import logoRecord from './../assets/icons/record.png'
 import logoActivities from './../assets/icons/logoActivities.png'
 import avatar from './../assets/images/avatar.png'
 const { width } = Dimensions.get("window");
@@ -57,7 +57,7 @@ class Browse extends Component {
                     margin={[0, 0, 15]}
                     size={50}
                     color="rgba(41,216,143,0.20)">
-                    <Image source={logoListen} style={styles.img} />
+                    <Image source={logoRecord} style={styles.img} />
                   </Badge>
                   <Text medium height={20}>
                    Listen
