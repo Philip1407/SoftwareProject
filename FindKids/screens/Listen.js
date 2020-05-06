@@ -8,7 +8,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
-export default class Listen extends Component {
+import * as MediaLibrary from 'expo-media-library';
+class Listen extends Component {
   constructor(props) {
     super(props);
     this.recording = null;
@@ -42,7 +43,7 @@ export default class Listen extends Component {
     this._onStopPressed()
   }
   _askForPermissions = async () => {
-    const response = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+    const response = await Permissions.askAsync(Permissions.AUDIO_RECORDING,Permissions.CAMERA_ROLL);
     this.setState({
       haveRecordingPermissions: response.status === 'granted',
     });
@@ -156,10 +157,20 @@ export default class Listen extends Component {
     this.setState({
       isLoading: false,
     });
+    await this.createAudioAsset();
+  }
+
+  async createAudioAsset() {
+    let newAsset = await MediaLibrary.createAssetAsync(this.recording.getURI());
+    //create an album on the device in to which the recordings should be stored, and pass in the new asset to store
+    MediaLibrary.createAlbumAsync('Recording', newAsset)
+      .then(() => { console.log('Album created!')
+                     this.props.getInfo(this.recording.getURI()) 
+                    })
+      .catch(err => console.log('Album creation error', err));
   }
 
   _onRecordPressed = () => {
-    console.log(this.state.isRecording)
     if (this.state.isRecording) {
       this._stopRecordingAndEnablePlayback();
     } else {
@@ -263,6 +274,7 @@ export default class Listen extends Component {
     );
   }
 }
+export default Listen;
 
 const styles = StyleSheet.create({
   listen: {

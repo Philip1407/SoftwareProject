@@ -1,3 +1,4 @@
-export const LOCALHOST = "http://localhost:3001/"
-export const LOGIN = "login"
-export const SIGNUP = "signup"
+export const LOCALHOST = "http://192.168.1.6:3001/"
+export const LOGIN = `${LOCALHOST}login`
+export const SIGNUP = `${LOCALHOST}signup`
+export const UPLOADRECORD = `${LOCALHOST}uploadRecord`
