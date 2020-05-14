@@ -3,14 +3,12 @@ const { promisify } = require("util");
 //Connect to MySQL DB
 var pool = mysql.createPool({
     connectionLimit: 100,
-    host: "localhost",
-    //port: 3306,
-    port: 8889,
-    user: "root",
-    // password: "phillip.1407",
-    // password: "123456",
-    password: "root",
-    database: "kidsafe",
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: "phillip.1407",
+    //password: "123456",
+    database: "kidsafe"
 });
 
 // //Check connection
@@ -51,11 +49,7 @@ module.exports = {
     //         resolve ({status:200, msg: '' })
     //     })})
     // },
-    update: (entity, tableName, idField, id) =>
-        pool_query(`update into ${tableName} set ? where ${idField} = ?`, [
-            entity,
-            id,
-        ]),
+    update:  (entity, tableName, idField,id) =>pool_query(`update ${tableName} set ? where ${idField} = ?`, [entity,id]),
     // {
     //     const sql = `update into ${table} set ? where ?`
     //     return new Promise((resolve,reject)=>{con.query(sql,[values,condition], function(err, result){

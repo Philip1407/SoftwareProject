@@ -9,8 +9,9 @@ var usersRouter = require('./routes/users');
 var uploadRouter = require('./routes/upload');
 var app = express();
 
-
-
+let passport = require('passport')
+require('./config/passport')
+app.use(passport.initialize())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
