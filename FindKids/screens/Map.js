@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import {
     Text,
-    Image,
     View,
     StyleSheet,
     Dimensions,
 } from 'react-native';
-import MapView, { Marker, Callout } from "react-native-maps";
+import MapView, { Marker, Callout, Polyline } from "react-native-maps";
 import isEqual from 'lodash/isEqual';
 import * as theme from "../constants/theme";
-import flagPinkImg from '../assets/images/kids1.png';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import * as Permissions from 'expo-permissions';
+
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -26,14 +26,14 @@ class Map extends Component {
                 longitude: null
             },
             poi: null,
-            locationMykids:{
+            locationMykids: {
                 latitude: null,
                 longitude: null,
             }
         };
         // this.onPoiClick = this.onPoiClick.bind(this);
     }
-    onPoiClick=(e)=> {
+    onPoiClick = (e) => {
         const poi = e.nativeEvent;
         this.setState({
             poi,
@@ -47,21 +47,25 @@ class Map extends Component {
     //         }
     //     })
     // }
-    componentDidMount() {
+    componentDidMount=()=> {
         if (this.props.coordinate) {
             return;
         }
         this.watchLocation();
+        this._askForPermissions();
 
     }
-    componentWillUnmount() {
+    componentWillUnmount=()=> {
         this.mounted = false;
         if (this.watchID) {
             navigator.geolocation.clearWatch(this.watchID);
         }
     }
 
-    async watchLocation() { // get current location
+    _askForPermissions = async () => {
+        const response = await Permissions.askAsync(Permissions.LOCATION);
+      };
+    watchLocation= async ()=> { // get current location
         this.watchID = navigator.geolocation.watchPosition(
             position => {
                 const myLastPosition = this.state.myPosition;
@@ -74,10 +78,12 @@ class Map extends Component {
                             longitude: myPosition.longitude
                         }
                     });
+                    console.log("region: ",this.state.region)
                 }
             },
             null,
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 2000 });
+            // { enableHighAccuracy: true, timeout: 20000, maximumAge: 2000 }); return về mỗi khi thay đổi 100m
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 1 });//return về mỗi khi thay đổi 1m
     }
     render() {
         let { coordinate } = this.props;
@@ -100,8 +106,9 @@ class Map extends Component {
                         latitudeDelta: LATITUDE_DELTA,
                         longitudeDelta: LONGITUDE_DELTA
                     }}
-                    followsUserLocation={true}
+                    // followsUserLocation={true}
                     showsUserLocation={true} >
+
                     {this.state.poi && (
                         <Marker coordinate={this.state.poi.coordinate}>
                             <Callout tooltip={true}>
@@ -113,13 +120,32 @@ class Map extends Component {
                         </Marker>
                     )}
                     <Marker coordinate={{
-                       latitude: 10.862035448000977,
-                       longitude: 106.74766380339861,
+                        latitude: 10.862035448000977,
+                        longitude: 106.74766380339861,
                         latitudeDelta: 0.03,
                         longitudeDelta: 0.03
                     }}>
-                    <Icon name="map-marker-alt" size={30} color="#900" />
+                        <Icon name="map-marker-alt" size={30} color="#900" />
                     </Marker>
+
+                    <Polyline
+                        coordinates={[
+                            {   latitude: 10.862035448000977,
+                                longitude: 106.74766380339861, },
+                           {...this.state.region,}
+                        ]}
+                        strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
+                        strokeColors={[
+                            '#7F0000',
+                            '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
+                            '#B24112',
+                            '#E5845C',
+                            '#238C23',
+                            '#7F0000'
+                        ]}
+                        strokeWidth={6}
+                    />
+
                 </MapView>
             </View>
         );

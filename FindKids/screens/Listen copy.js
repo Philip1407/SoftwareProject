@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
-  FlatList,
+  Dimensions,
+  ScrollView
 } from "react-native";
 import { Button, Block, Text, Badge, Card } from "../components";
 import { theme } from "../constants";
@@ -12,45 +12,18 @@ import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
-import * as DocumentPicker from 'expo-document-picker';
-import { apiAxios } from "../constants";
-var ag;
+
+const { width } = Dimensions.get("window");
+
 class Listen extends Component {
   constructor(props) {
     super(props);
-    ag=this;
-    props.socket.on("NhanYeuCauGhiAm",function(data){
-      console.log("2   "+props.socket.id+"   Nhaan  aád "+data);
-      if(!ag.state.isRecording){
-        ag._stopPlaybackAndBeginRecording();
-      }
-  })
-  props.socket.on("HuyYeuCauGhiAm",function(data){
-      console.log("4   "+props.socket.id+"   Nhaan   "+data)
-      if(ag.state.isRecording){
-        ag._stopRecordingAndEnablePlayback();
-      props.socket.emit("TaiFileGhiAm", props.socket.id);
-      }
-    })
-    props.socket.on("TaiFileGhiAmVeMayPH",async function(data){
-      console.log("6   "+props.socket.id+"   Nhaan   "+data)
-      let uri = await FileSystem.downloadAsync(
-        apiAxios.UPLOADRECORD + "/down",
-        FileSystem.documentDirectory + 'small.m4a'
-    )
-    // console.log("day la uri: ",uri)   
-    let newAsset = await MediaLibrary.createAssetAsync(uri.uri);
-    //create an album on the device in to which the recordings should be stored, and pass in the new asset to store
-    await MediaLibrary.createAlbumAsync('DownloadRecording', newAsset);
-     
-
-  })
-
     this.recording = null;
     this.sound = null;
     this.isSeeking = false;
     this.shouldPlayAtEndOfSeek = false;
     this.state = {
+      newAsset:null,
       haveRecordingPermissions: false,
       isLoading: false,
       isPlaybackAllowed: false,
@@ -64,10 +37,9 @@ class Listen extends Component {
       shouldCorrectPitch: true,
       volume: 1.0,
       rate: 1.0,
-      YC:false,
     };
     this.recordingSettings = JSON.parse(JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY));
-    // // UNCOMMENT this TO TEST maxFileSize:
+    // // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
   }
 
@@ -154,7 +126,6 @@ class Listen extends Component {
     await this.recording.startAsync(); // Will call this._updateScreenForRecordingStatus to update the screen.
     this.setState({
       isLoading: false,
-      YC:true,
     });
   }
 
@@ -179,35 +150,36 @@ class Listen extends Component {
       playThroughEarpieceAndroid: false,
       staysActiveInBackground: true,
     });
-    await this.createAudioAsset();
-    // let result = await DocumentPicker.getDocumentAsync({});
-    // let newAsset = await MediaLibrary.createAssetAsync(result.uri);
-    // const soundObject = new Audio.Sound();
-    // soundObject.setOnPlaybackStatusUpdate(this._updateScreenForSoundStatus);
-    // const { sound, status} = await soundObject.loadAsync(
-    //   newAsset,
-    // { isLooping: true,
-    //   isMuted: this.state.muted,
-    //   volume: this.state.volume,
-    //   rate: this.state.rate,
-    //   shouldCorrectPitch: this.state.shouldCorrectPitch
-    // },
-    // true);
-    // this.sound = soundObject;
-   
+    const { sound, status } = await this.recording.createNewLoadedSoundAsync(
+      {
+        isLooping: true,
+        isMuted: this.state.muted,
+        volume: this.state.volume,
+        rate: this.state.rate,
+        shouldCorrectPitch: this.state.shouldCorrectPitch,
+      },
+      this._updateScreenForSoundStatus
+    );
+    // this.sound = sound;
     this.setState({
       isLoading: false,
-      YC:false,
     });
-   
+    await this.createAudioAsset();
   }
 
   async createAudioAsset() {
     let newAsset = await MediaLibrary.createAssetAsync(this.recording.getURI());
+    this.setState({
+      newAsset:newAsset
+    })
     //create an album on the device in to which the recordings should be stored, and pass in the new asset to store
  
-    await MediaLibrary.createAlbumAsync('Recording', newAsset);
-    this.props.getInfo(this.recording.getURI())
+    MediaLibrary.createAlbumAsync('Recording', newAsset)
+      .then(() => {
+        console.log('Album created!')
+        this.props.getInfo(this.recording.getURI())
+      })
+      .catch(err => console.log('Album creation error', err));
   }
 
   _onRecordPressed = () => {
@@ -218,8 +190,13 @@ class Listen extends Component {
     }
   };
 
-  
+
   _onPlayPausePressed = async () => {
+    const soundObject = new Audio.Sound();
+    let a =this.state.newAsset.uri;
+    console.log("Aa", a)
+    this.sound= await soundObject.loadAsync(this.state.newAsset);
+    // await soundObject.playAsync();
     if (this.sound != null) {
       if (this.state.isPlaying) {
         await this.sound.pauseAsync();
@@ -227,6 +204,7 @@ class Listen extends Component {
         await this.sound.playAsync();
       }
     }
+
   };
   _onStopPressed = () => {
     if (this.sound != null) {
@@ -276,36 +254,11 @@ class Listen extends Component {
     }
     return '';
   }
-  YeuCauGhiAm=()=>{
-    this.props.YeuCauGhiAm();  
-    // this.props.socket.emit("YeuCauGhiAm",socket.id)  //UserPH lấy từ db
-  }
- 
-  HuyCauGhiAm=()=>{
-    this.props.HuyCauGhiAm();  
-    // this.props.socket.emit("HuyCauGhiAm",socket.id)  //UserPH lấy từ db
-}
-
-  ChonFile= async ()=>{
-    let result = await DocumentPicker.getDocumentAsync({});
-    let newAsset = await MediaLibrary.createAssetAsync(result.uri);
-    const soundObject = new Audio.Sound();
-    soundObject.setOnPlaybackStatusUpdate(this._updateScreenForSoundStatus);
-    const { sound, status} = await soundObject.loadAsync(
-      newAsset,
-    { isLooping: true,
-      isMuted: this.state.muted,
-      volume: this.state.volume,
-      rate: this.state.rate,
-      shouldCorrectPitch: this.state.shouldCorrectPitch
-    },
-    true);
-    this.sound = soundObject;
-  }
 
   render() {
     let { isRecording, isPlaying } = this.state;
     return (
+     
       <Block style={styles.listen} padding={[0, theme.sizes.base * 2]}>
         <Text h1 bold>
           Listen
@@ -335,22 +288,25 @@ class Listen extends Component {
           <Text bold>
             {this._getPlaybackTimestamp()}
           </Text>
-          <Button shadow center middle  onPress={this.YeuCauGhiAm}>
-          <Text>Yêu cầu ghi âm</Text>
-          </Button>
-          <Button shadow center middle  onPress={this. HuyCauGhiAm}>
-          <Text> HuyCauGhiAm</Text>
-          </Button>
-         
-          <Button shadow center middle style={styles.records} onPress={this.ChonFile}>
-            <Badge
-              margin={[15, 28, 15]}
-              size={100}
-              color="rgba(41,216,143,0.20)">
-               <Text>Chọn file</Text>
+        </Block>
+        <Card center shadow style={styles.category}>
+          <Button style={styles.playRecord}  onPress={this._onPlayPausePressed}>
+          <Badge
+              margin={[10,10,10]}
+              size={40}
+             >
+              {!isPlaying ? <Icon name="play" size={40} />
+                : <Icon name="stop" size={40} />}
             </Badge>
           </Button>
-        </Block>
+          <Text height={100} right >
+            Name
+          </Text>
+          <Text bold>
+            {this._getPlaybackTimestamp()}
+          </Text>
+        </Card>
+        
       </Block>
     );
   }

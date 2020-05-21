@@ -4,6 +4,8 @@ import { Block} from "../components";
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import {login as LoginAPI} from '../action'
+
+
 class login extends Component {
     render() {
         const {navigation}=this.props;

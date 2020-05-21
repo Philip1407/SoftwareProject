@@ -9,8 +9,8 @@ import Login from "../container/login"
 import Welcome from "../screens/Welcome";
 import Forgot from "../screens/Forgot";
 import SignUp from "../container/signup";
-import Map from "../screens/Map";
-import Browse from "../screens/Browse";
+import Map from "../container/Map";
+import Browse from "../container/Browse";
 import Listen from "../container/listen";
 import Activities from "../screens/Activities";
 import Settings from "../screens/Settings";

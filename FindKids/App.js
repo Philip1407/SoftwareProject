@@ -6,28 +6,29 @@ import { Block } from "./components";
 
 import configStore from './redux/configureStore'
 import { Provider } from 'react-redux'
+
 const store = configStore();
 
-export default class App extends React.Component {
+class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
         <Block white>
-          <Navigation />
+          <Navigation/>
         </Block>
       </Provider>
-
     );
   }
 }
 
+export default App;
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   backgroundColor: '#fff',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
