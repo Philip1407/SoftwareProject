@@ -1,103 +1,119 @@
 import React, { Component } from "react";
 import {
+  Alert,
   ActivityIndicator,
   Keyboard,
   KeyboardAvoidingView,
-  StyleSheet
+  StyleSheet,
+  ScrollView,
+  View
 } from "react-native";
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
 
-const VALID_EMAIL = "nhom6@gmail.com";
-const VALID_PASSWORD = "123456";
-
-export default class Login extends Component {
+export default class LoginForKids extends Component {
   state = {
-    email: VALID_EMAIL,
-    password: VALID_PASSWORD,
+    email: null,
+    username: null,
+    password: null,
+    passwordCF:null,
     errors: [],
     loading: false
   };
 
-  handleLogin = async () => {
-    const { email, password } = this.state;
-    const { navigation, handleLogin } = this.props;
-    let check = await handleLogin(email, password);
+  handleSignUp = async () => {
+    const { navigation, handleSignUp } = this.props;
+    const { email, username, password ,passwordCF} = this.state;
     const errors = [];
+    let check = await handleSignUp(email, username, password);
     Keyboard.dismiss();
     this.setState({ loading: true });
     // check with backend API or with some static data
-    if (check.status === 200) {
-      navigation.navigate("Browse");
-    }
-    else {
-      errors.push("email");
-      errors.push("password");
-    }
+    if (!email) errors.push("email");
+    if (!username) errors.push("username");
+    if (!password) errors.push("password");
+    if (password !== passwordCF) errors.push("passwordCF");
     this.setState({ errors, loading: false });
+    if (check.status === 200 && !errors.length) {
+      Alert.alert(
+        "Success!",
+        "Your account has been created",
+        [
+          {
+            text: "Continue",
+            onPress: () => {
+              navigation.navigate("Browse");
+            }
+          }
+        ],
+        { cancelable: false }
+      );
+    }
   }
-  
+
   render() {
     const { navigation } = this.props;
     const { loading, errors } = this.state;
     const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
 
     return (
-      <KeyboardAvoidingView style={styles.login} behavior="hight">
+
+      <KeyboardAvoidingView style={styles.signup} behavior="hight">
+        <ScrollView>
         <Block padding={[0, theme.sizes.base * 2]}>
-          <Text h1 bold >
-            Login
+          <Text h1 bold>
+          Login For Kids
           </Text>
+        
           <Block middle>
+         
             <Input
-              label="Email"
+              email
+              label="Enter the verification code"
               error={hasErrors("email")}
               style={[styles.input, hasErrors("email")]}
               defaultValue={this.state.email}
               onChangeText={text => this.setState({ email: text })}
             />
-            <Input
-              secure
-              label="Password"
-              error={hasErrors("password")}
-              style={[styles.input, hasErrors("password")]}
-              defaultValue={this.state.password}
-              onChangeText={text => this.setState({ password: text })}
-            />
-            <Button gradient onPress={() => this.handleLogin()}>
+            
+            <Button gradient onPress={() => this.handleSignUp()}>
               {loading ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
                   <Text bold white center>
-                    Login
+                    OK
                   </Text>
                 )}
             </Button>
-
-
-            <Button onPress={() => navigation.navigate("Forgot")}>
+            <Button onPress={() => navigation.navigate("Login")}>
               <Text
                 gray
                 caption
                 center
                 style={{ textDecorationLine: "underline" }}
               >
-                Forgot your password?
+                I am not a child
               </Text>
             </Button>
+            
           </Block>
-        </Block>
-      </KeyboardAvoidingView>
+       
+
+         
+          
+          </Block>
+        </ScrollView>
+        </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  login: {
+  signup: {
     flex: 1,
+    justifyContent: "center",
     backgroundColor: theme.colors.white,
-    justifyContent: "center"
   },
   input: {
     borderRadius: 0,
@@ -107,5 +123,6 @@ const styles = StyleSheet.create({
   },
   hasErrors: {
     borderBottomColor: theme.colors.accent
-  }
+  },
+
 });

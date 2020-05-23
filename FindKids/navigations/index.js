@@ -14,6 +14,7 @@ import Browse from "../container/Browse";
 import Listen from "../container/listen";
 import Activities from "../screens/Activities";
 import Settings from "../screens/Settings";
+import LoginForKids from "../screens/LoginForKids"
 import { theme } from "../constants";
 
 const screens = createStackNavigator(
@@ -26,7 +27,8 @@ const screens = createStackNavigator(
     Browse,
     Listen,
     Activities,
-    Settings
+    Settings,
+    LoginForKids
   },
   {
     defaultNavigationOptions: {
