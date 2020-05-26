@@ -5,11 +5,7 @@ let passport = require('passport')
 let jwt = require('jsonwebtoken')
 const JWTSecret = 'jwt-secret'
 
-router.get('/',(req,res)=>{
-  res.json("User authorize")
-})
-
-/*router.get('/signin', (req, res)=> {
+router.get('/signin', (req, res)=> {
   passport.authenticate('signin',(err,user,info)=>{
     console.log('pass authenticate')
     if(err) return res.status(400).json(err)
@@ -53,6 +49,6 @@ router.post('/signup', (req,res, next )=>{
       })
     }
   })(req,res)
-})*/
+})
 
 module.exports = router;

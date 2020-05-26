@@ -1,9 +1,11 @@
-let db = require('../utils/db')
+let mongoose = require('mongoose')
 
-module.exports = {
-    find:  condition => db.find('user', condition),
-    findAll: _=> db.findAll('user'),
-    create: entity=>db.create(entity,'user'),
-    update: (entity,id)=>{db.update(entity,'user','id',id)},
-    delete: id=>{'user','id',id}
-};
+let userSchema = new mongoose.Schema({
+    username: {type: String, require: true},
+    password: {type: String, require: true},
+    firstname: String,
+    lastname: String,
+    role: {type: Number, default: 0}
+}) 
+
+module.exports = mongoose.model('User', userSchema)
