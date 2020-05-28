@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  View,
 } from "react-native";
 import { Button, Block, Text, Badge, Card } from "../components";
 import { theme } from "../constants";
@@ -310,46 +311,65 @@ class Listen extends Component {
         <Text h1 bold>
           Listen
         </Text>
-        <Block center padding={[theme.sizes.base * 4, 0]} >
-          <Button shadow center middle style={styles.records} onPress={this._onRecordPressed}>
-            <Badge
-              margin={[15, 28, 15]}
-              size={100}
-              color="rgba(41,216,143,0.20)">
-              {!isRecording ? <Icon name="microphone" size={100} />
-                : <Icon name="stop" size={100} />}
-            </Badge>
-          </Button>
-          <Text bold>
-            {this._getRecordingTimestamp()}
-          </Text>
-          <Button shadow center middle style={styles.records} onPress={this._onPlayPausePressed}>
-            <Badge
-              margin={[15, 28, 15]}
-              size={100}
-              color="rgba(41,216,143,0.20)">
-              {!isPlaying ? <Icon name="play" size={100} />
-                : <Icon name="stop" size={100} />}
-            </Badge>
-          </Button>
-          <Text bold>
-            {this._getPlaybackTimestamp()}
-          </Text>
-          <Button shadow center middle  onPress={this.YeuCauGhiAm}>
-          <Text>Yêu cầu ghi âm</Text>
-          </Button>
-          <Button shadow center middle  onPress={this. HuyCauGhiAm}>
-          <Text> HuyCauGhiAm</Text>
-          </Button>
+        <Block style={styles.mainView} padding={[theme.sizes.base * 4, 0]} >
+
+          <View style={styles.view}>
+            <View style={styles.viewBadge1}>
+                <Button shadow center middle style={styles.records} onPress={this._onRecordPressed}>
+                  <Badge
+                    margin={[20]}
+                    size={40}
+                    color="rgba(41,216,143,0.20)">
+                    {!isRecording ? <Icon name="microphone" size={40} />
+                      : <Icon name="stop" size={40} />}
+                  </Badge>
+                </Button>
+                <View style={styles.viewText}>
+                  <Text bold>
+                    {this._getRecordingTimestamp()}
+                  </Text>
+                </View>    
+            </View>
+            <View style={styles.viewBadge1}>
+                <Button shadow center middle style={styles.records} onPress={this._onPlayPausePressed}>
+                  <Badge
+                    margin={[20]}
+                    size={40}
+                    color="rgba(41,216,143,0.20)">
+                    {!isPlaying ? <Icon name="play" size={40} />
+                      : <Icon name="stop" size={40} />}
+                  </Badge>
+                </Button>
+                <View style={styles.viewText}>
+                  <Text bold>
+                    {this._getPlaybackTimestamp()}
+                  </Text>
+                </View>
+            </View>
+          </View>
          
-          <Button shadow center middle style={styles.records} onPress={this.ChonFile}>
-            <Badge
-              margin={[15, 28, 15]}
-              size={100}
-              color="rgba(41,216,143,0.20)">
-               <Text>Chọn file</Text>
-            </Badge>
-          </Button>
+          <View style={styles.listButton}>
+            <TouchableOpacity onPress={this.YeuCauGhiAm}>
+              <View style={styles.button}>
+              <Text style={styles.buttonText}>Yêu cầu ghi âm</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this. HuyCauGhiAm}>
+              <View style={styles.button}>
+              <Text style={styles.buttonText}>Hủy yêu cầu ghi âm</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this. ChonFile}>
+              <View style={styles.button}>
+              <Text style={styles.buttonText}>Chọn file</Text>
+              </View>       
+            </TouchableOpacity>
+         
+          </View>
+       
+          
+      
+          
         </Block>
       </Block>
     );
@@ -361,11 +381,11 @@ const styles = StyleSheet.create({
   listen: {
     flex: 1,
     backgroundColor: theme.colors.white,
-    justifyContent: "center",
+    
   },
   records: {
-    height: theme.sizes.base * 10,
-    width: theme.sizes.base * 10,
+    height: theme.sizes.base * 5,
+    width: theme.sizes.base * 5,
     borderRadius: 100,
     backgroundColor: theme.colors.primary
   },
@@ -381,5 +401,38 @@ const styles = StyleSheet.create({
     maxHeight: theme.sizes.base * 3,
     backgroundColor:'red'
   },
+  view: {
+   flexDirection: 'row',
+    marginTop: 100,
+   
 
+  },
+  viewBadge1: {
+   margin: 10
+  },
+  viewText: {
+    marginLeft: 20
+  },
+  mainView: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  button: {
+    marginBottom: 30,
+    width: 180,
+    alignItems: 'center',
+    backgroundColor: '#2196F3',
+    borderRadius: 20
+  },
+  buttonText: {
+    textAlign: 'center',
+    padding: 20,
+    color: 'white'
+  },
+  listButton: {
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 80
+    
+  }
 });
