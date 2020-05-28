@@ -2,7 +2,7 @@
 import axiosService from '../axios/axios'
 
 import { apiAxios } from "../constants";
-import { Socket,record } from "../constants";
+import { Socket,record,location as currentlocation} from "../constants";
 
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
@@ -34,7 +34,7 @@ export const uploadRecord = (data) => {
         //    let abc= await axiosService.post(uploadRecord,{data});
         //    console.log("apiAxios",abc.data) //back end trả giá trị data về
         //  console.log("abc",data)
-        await fetch(uploadRecord, {
+        await fetch(uploadRecord, {  //uploadRecord la đường dẫn route bên báckend
             method: 'POST',
             body: data
         });
@@ -72,4 +72,14 @@ export const getRecordtoRedux = (newAsset) => {
         newAsset
     }
 }
+
+export const getlocationcurrent = (location) => { 
+    console.log("abababa",location)
+    return {
+        type: currentlocation.location_current,
+        location
+    }
+}
+
+
 

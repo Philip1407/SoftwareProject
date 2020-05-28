@@ -24,11 +24,11 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-require('../routes/socketio')(server);
+
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
+require('../routes/socketio')(server);
 /**
  * Normalize a port into a number, string, or false.
  */

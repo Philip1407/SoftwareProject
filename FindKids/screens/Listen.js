@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-  View,
+  View
 } from "react-native";
 import { Button, Block, Text, Badge, Card } from "../components";
 import { theme } from "../constants";
@@ -25,7 +25,7 @@ class Listen extends Component {
       if(!ag.state.isRecording){
         ag._stopPlaybackAndBeginRecording();
       }
-  })
+    })
   props.socket.on("HuyYeuCauGhiAm",function(data){
       console.log("4   "+props.socket.id+"   Nhaan   "+data)
       if(ag.state.isRecording){
@@ -286,7 +286,6 @@ class Listen extends Component {
     this.props.HuyCauGhiAm();  
     // this.props.socket.emit("HuyCauGhiAm",socket.id)  //UserPH lấy từ db
 }
-
   ChonFile= async ()=>{
     let result = await DocumentPicker.getDocumentAsync({});
     let newAsset = await MediaLibrary.createAssetAsync(result.uri);

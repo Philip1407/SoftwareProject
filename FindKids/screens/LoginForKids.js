@@ -11,55 +11,27 @@ import {
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
-
+var a;
 export default class LoginForKids extends Component {
-  state = {
-    email: null,
-    username: null,
-    password: null,
-    passwordCF:null,
-    errors: [],
-    loading: false
-  };
+  constructor(props) {
+    super(props);
+    a= this;
+    this.state = {
+      code:'',
+    };
+  
+  }
+
 
   handleSignUp = async () => {
-    const { navigation, handleSignUp } = this.props;
-    const { email, username, password ,passwordCF} = this.state;
-    const errors = [];
-    let check = await handleSignUp(email, username, password);
-    Keyboard.dismiss();
-    this.setState({ loading: true });
-    // check with backend API or with some static data
-    if (!email) errors.push("email");
-    if (!username) errors.push("username");
-    if (!password) errors.push("password");
-    if (password !== passwordCF) errors.push("passwordCF");
-    this.setState({ errors, loading: false });
-    if (check.status === 200 && !errors.length) {
-      Alert.alert(
-        "Success!",
-        "Your account has been created",
-        [
-          {
-            text: "Continue",
-            onPress: () => {
-              navigation.navigate("Browse");
-            }
-          }
-        ],
-        { cancelable: false }
-      );
-    }
+    this.props.handleSignUp(this.state.code);
+   
   }
 
   render() {
     const { navigation } = this.props;
-    const { loading, errors } = this.state;
-    const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
-
     return (
-
-      <KeyboardAvoidingView style={styles.signup} behavior="hight">
+      <KeyboardAvoidingView style={styles.signup} >
         <ScrollView>
         <Block padding={[0, theme.sizes.base * 2]}>
           <Text h1 bold>
@@ -69,22 +41,17 @@ export default class LoginForKids extends Component {
           <Block middle>
          
             <Input
-              email
               label="Enter the verification code"
-              error={hasErrors("email")}
-              style={[styles.input, hasErrors("email")]}
-              defaultValue={this.state.email}
-              onChangeText={text => this.setState({ email: text })}
+              style={[styles.input]}
+              defaultValue={this.state.code}
+              onChangeText={text => this.setState({ code: text })}
             />
             
-            <Button gradient onPress={() => this.handleSignUp()}>
-              {loading ? (
-                <ActivityIndicator size="small" color="white" />
-              ) : (
+            <Button gradient onPress={this.handleSignUp}>
                   <Text bold white center>
                     OK
                   </Text>
-                )}
+               
             </Button>
             <Button onPress={() => navigation.navigate("Login")}>
               <Text

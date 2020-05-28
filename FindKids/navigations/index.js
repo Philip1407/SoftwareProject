@@ -14,7 +14,7 @@ import Browse from "../container/Browse";
 import Listen from "../container/listen";
 import Activities from "../screens/Activities";
 import Settings from "../screens/Settings";
-import LoginForKids from "../screens/LoginForKids"
+import LoginForKids from "../container/LoginForKids"
 import { theme } from "../constants";
 
 const screens = createStackNavigator(
