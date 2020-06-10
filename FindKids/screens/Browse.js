@@ -4,7 +4,8 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 
 import { Card, Badge, Button, Block, Text } from "../components";
@@ -17,7 +18,21 @@ const { width } = Dimensions.get("window");
 
 class Browse extends Component {
   QuanLyTre=()=>{
-    this.props.QuanLyTre();
+    let Phong = Math.floor(Math.random() * 100000) + 1;
+    console.log(Phong);
+    let PhongString = Phong.toString();
+    Alert.alert(
+      "Room",
+      PhongString,
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: true }
+    );
+    this.props.QuanLyTre(Phong);
+  }
+  Notifications=()=>{
+    this.props.Notifications();
   }
   render() {
     const { navigation } = this.props;
@@ -87,7 +102,7 @@ class Browse extends Component {
                 </Card>
               </TouchableOpacity>
               <TouchableOpacity
-               onPress={this.props.QuanLyTre}>
+               onPress={this.QuanLyTre}>
                 <Card center middle shadow style={styles.category}>
                   <Badge
                     margin={[0, 0, 15]}
@@ -103,6 +118,24 @@ class Browse extends Component {
                   </Text>
                 </Card>
               </TouchableOpacity>
+              <TouchableOpacity
+               onPress={this.Notifications}>
+                <Card center middle shadow style={styles.category}>
+                  <Badge
+                    margin={[0, 0, 15]}
+                    size={50}
+                    color="rgba(41,216,143,0.20)">
+                    <Image source={logoActivities} style={styles.img} />
+                  </Badge>
+                  <Text medium height={20}>
+                  Notifications
+                  </Text>
+                  <Text gray caption>
+                  Notifications
+                  </Text>
+                </Card>
+              </TouchableOpacity>
+          
           </Block>
         </ScrollView>
       </Block>

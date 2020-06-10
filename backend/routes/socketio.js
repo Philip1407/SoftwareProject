@@ -12,7 +12,7 @@ module.exports = function (server) {
         })
 
         await socket.on("location",async function(data){ 
-            let adata= JSON.parse(data);
+            let adata= JSON.parse(data); //{ ...data.region, date} 
             await socket.to(socket.Phong).emit("locationcerrnet",data)
              console.log("location",adata)
         })

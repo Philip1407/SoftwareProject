@@ -12,6 +12,7 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import * as DocumentPicker from 'expo-document-picker';
 import { apiAxios } from "../constants";
+
 var a;
 class Browse extends Component {
     constructor(props) {
@@ -69,7 +70,7 @@ class Browse extends Component {
         const {navigation,locationcurrent,socket}=this.props;
         return (
             <Block>
-                <BrowseScreens navigation={navigation} QuanLyTre={this.QuanLyTre}></BrowseScreens>
+                <BrowseScreens navigation={navigation} QuanLyTre={this.QuanLyTre} Notifications={this.Notifications}></BrowseScreens>
             </Block>
         );
     }
@@ -90,10 +91,10 @@ class Browse extends Component {
         await socket.emit("location",JSON.stringify(data));
     }
 
-    QuanLyTre = () => {
+    QuanLyTre = (Phong) => {
         var { socket } = this.props;
         console.log("QuanLyTre + ten máy con"); //lấy id máy con vào db
-        let Phong = Math.floor(Math.random() * 100000) + 1;
+        // let Phong = Math.floor(Math.random() * 100000) + 1;
         let data = { Phong, id: socket.id };
         console.log(data);
         socket.emit("QuanLyTre", JSON.stringify(data)); //UserPH lấy từ db
@@ -120,7 +121,9 @@ class Browse extends Component {
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 1 });//return về mỗi khi thay đổi 1m
     }
 
-
+    Notifications=()=>{
+        console.log("ababababab")
+    }
 
 }
 const mapStatetoProps = (state) => {
