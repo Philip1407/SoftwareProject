@@ -15,9 +15,10 @@ class login extends Component {
             </Block>
         );
     }
-    handleLogin= async (email,password)=>{
+    handleLogin= async (username,password)=>{
         const { LoginUser } = this.props;
-        let check = await LoginUser({email,password});
+        let check = await LoginUser({username,password});
+        console.log(check)
         return check;
     }
 }

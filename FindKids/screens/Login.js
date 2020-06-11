@@ -9,30 +9,31 @@ import {
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
 
-const VALID_EMAIL = "nhom6@gmail.com";
+const VALID_USERNAME = "Tuan";
 const VALID_PASSWORD = "123456";
 
 export default class Login extends Component {
   state = {
-    email: VALID_EMAIL,
+    username: VALID_USERNAME,
     password: VALID_PASSWORD,
     errors: [],
     loading: false
   };
 
   handleLogin = async () => {
-    const { email, password } = this.state;
+    const { username, password } = this.state;
     const { navigation, handleLogin } = this.props;
-    let check = await handleLogin(email, password);
+    let check = await handleLogin(username, password);
     const errors = [];
     Keyboard.dismiss();
     this.setState({ loading: true });
     // check with backend API or with some static data
+    console.log(check)
     if (check.status === 200) {
       navigation.navigate("Browse");
     }
     else {
-      errors.push("email");
+      errors.push("username");
       errors.push("password");
     }
     this.setState({ errors, loading: false });
@@ -51,11 +52,11 @@ export default class Login extends Component {
           </Text>
           <Block middle>
             <Input
-              label="Email"
-              error={hasErrors("email")}
-              style={[styles.input, hasErrors("email")]}
-              defaultValue={this.state.email}
-              onChangeText={text => this.setState({ email: text })}
+              label="username"
+              error={hasErrors("username")}
+              style={[styles.input, hasErrors("username")]}
+              defaultValue={this.state.username}
+              onChangeText={text => this.setState({ username: text })}
             />
             <Input
               secure

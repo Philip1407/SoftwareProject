@@ -13,9 +13,10 @@ class signup extends Component {
             </Block>
         );
     }
-    handleSignUp= async (email, username, password)=>{
+    handleSignUp = async(username, password, firstname, lastname)=>{
         const { SignUpUser } = this.props;
-        let check = await SignUpUser({email, username, password});
+        let check = await SignUpUser({username, password, firstname, lastname});
+        console.log(check)
         return check;
     }
 }
@@ -26,7 +27,7 @@ class signup extends Component {
 // }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        SignUpUser : bindActionCreators(SignUpAPI, dispatch),
+        SignUpUser: bindActionCreators(SignUpAPI, dispatch),
     }
 }
 

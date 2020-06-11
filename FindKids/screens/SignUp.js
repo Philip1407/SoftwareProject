@@ -8,32 +8,37 @@ import {
   ScrollView
 } from "react-native";
 
+
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
 
 export default class SignUp extends Component {
   state = {
-    email: null,
     username: null,
     password: null,
     passwordCF:null,
+    firstname: null,
+    lastname: null,
     errors: [],
     loading: false
   };
 
   handleSignUp = async () => {
     const { navigation, handleSignUp } = this.props;
-    const { email, username, password ,passwordCF} = this.state;
+    const { username, password,passwordCF, firstname, lastname} = this.state;
     const errors = [];
-    let check = await handleSignUp(email, username, password);
+    let check = await handleSignUp(username, password, firstname, lastname);
     Keyboard.dismiss();
     this.setState({ loading: true });
     // check with backend API or with some static data
-    if (!email) errors.push("email");
+    
     if (!username) errors.push("username");
     if (!password) errors.push("password");
     if (password !== passwordCF) errors.push("passwordCF");
+    if (!firstname) errors.push("firstname");
+    if (!lastname) errors.push("lastname");
     this.setState({ errors, loading: false });
+    console.log(check)
     if (check.status === 200 && !errors.length) {
       Alert.alert(
         "Success!",
@@ -65,14 +70,13 @@ export default class SignUp extends Component {
             Sign Up
           </Text>
           <Block middle>
-            <Input
-              email
+            {/* <Input
               label="Email"
               error={hasErrors("email")}
               style={[styles.input, hasErrors("email")]}
               defaultValue={this.state.email}
               onChangeText={text => this.setState({ email: text })}
-            />
+            /> */}
             <Input
               label="Username"
               error={hasErrors("username")}
@@ -96,6 +100,19 @@ export default class SignUp extends Component {
               defaultValue={this.state.passwordCF}
               onChangeText={text => this.setState({ passwordCF: text })}
             />
+            <Input
+              label="First name"
+              error={hasErrors("First name")}
+              style={[styles.input, hasErrors("First name")]}
+              onChangeText={text => this.setState({ firstname: text })}
+            />
+            <Input
+              label="Last name"
+              error={hasErrors("Last name")}
+              style={[styles.input, hasErrors("Last name")]}
+              onChangeText={text => this.setState({ lastname: text })}
+            />
+            
             <Button gradient onPress={() => this.handleSignUp()}>
               {loading ? (
                 <ActivityIndicator size="small" color="white" />

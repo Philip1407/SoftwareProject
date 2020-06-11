@@ -1,4 +1,4 @@
-export const LOCALHOST = "https://35.185.166.217:3001/"
-export const LOGIN = `${LOCALHOST}login`
-export const SIGNUP = `${LOCALHOST}signup`
+export const LOCALHOST = "http://192.168.1.14:3001/"
+export const LOGIN = `${LOCALHOST}auth/signin`
+export const SIGNUP = `${LOCALHOST}auth/signup`
 export const UPLOADRECORD = `${LOCALHOST}uploadRecord`

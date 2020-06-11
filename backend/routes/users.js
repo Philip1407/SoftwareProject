@@ -9,6 +9,13 @@ router.get('/',(req,res)=>{
   res.json("User authorize")
 })
 
+router.post('/location',(req,res) =>{
+  User.findOneAndUpdate({'username': req.body.username},{ "$push": { "path": req.body.location } }, (err,user)=>{
+    if(err) return res.status(400).json(err)
+      return res.status(200).json('Updated path')
+  })
+})
+
 /*router.get('/signin', (req, res)=> {
   passport.authenticate('signin',(err,user,info)=>{
     console.log('pass authenticate')

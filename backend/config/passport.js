@@ -18,6 +18,7 @@ passport.use('signup', new LocalStrategy(
     },
     (username,password,done)=>{
         try{
+            console.log(username, password)
             User.findOne({'username':username}, (err,user) =>{
                 if(user)
                     return done(null,false,{message: 'Username has already taken'})

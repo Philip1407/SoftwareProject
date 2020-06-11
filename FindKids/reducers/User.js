@@ -1,12 +1,16 @@
-import { apiAxios } from "../constants";
-const InitialState = {};
+import { action } from "../constants";
+import {GET_USER} from '../constants/action'
+
+let InitialState = {};
 
 const Reducer = (state = InitialState, action) => {
     switch (action.type) {
-        case apiAxios.GET_USER:
-            state =action.data.data;
-            return state;
-        default: return state;
+        case GET_USER:
+            {
+                console.log(action.type)
+                return {...state, user: action.user, jwt: action.jwt}
+            }
+        default: return state
     }
 }
 

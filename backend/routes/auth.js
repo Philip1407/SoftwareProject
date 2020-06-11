@@ -5,7 +5,7 @@ let passport = require('passport')
 let jwt = require('jsonwebtoken')
 const JWTSecret = 'jwt-secret'
 
-router.get('/signin', (req, res)=> {
+router.post('/signin', (req, res)=> {
   passport.authenticate('signin',(err,user,info)=>{
     console.log('pass authenticate')
     if(err) return res.status(400).json(err)
@@ -17,7 +17,7 @@ router.get('/signin', (req, res)=> {
         User.findOne({'username': user.username}, (err,logInUser)=>{
         if(logInUser){
           const token = jwt.sign({id: user.username}, JWTSecret)
-          res.status(200).json({auth: true, token:token, message: 'User found and logged in'})
+          res.status(200).json({user: logInUser, auth: true, token:token, message: 'User found and logged in'})
     }})})
     }
   }
@@ -25,7 +25,7 @@ router.get('/signin', (req, res)=> {
 })
 
 
-router.post('/signup', (req,res, next )=>{
+router.post('/signup', (req,res)=>{
   passport.authenticate('signup',(err,user,info)=>{
     if(err) return res.status(400).json(err)
     if(info!=undefined){
