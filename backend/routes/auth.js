@@ -1,54 +1,52 @@
 var express = require('express');
 var router = express.Router();
 let User = require('../models/user')
-let passport = require('passport')
 let jwt = require('jsonwebtoken')
-const JWTSecret = 'jwt-secret'
 
-router.post('/signin', (req, res)=> {
-  passport.authenticate('signin',(err,user,info)=>{
-    console.log('pass authenticate')
-    if(err) return res.status(400).json(err)
-    if(info != undefined){
-      return res.json(info.message)
-    }else{
-      req.logIn(user, err=>{
-        if(err) return res.status(400).json(err)
-        User.findOne({'username': user.username}, (err,logInUser)=>{
-        if(logInUser){
-          const token = jwt.sign({id: user.username}, JWTSecret)
-          res.status(200).json({user: logInUser, auth: true, token:token, message: 'User found and logged in'})
-    }})})
-    }
+
+router.post('/login', async (req, res) => {
+  // entity = {
+  //   "username": "admin",
+  //   "Password": "admin"
+  // }
+  // let result = req.body;
+  let {username,password}= req.body;
+  let result = await User.findOne({ 'username': username, "password": password });
+  if (result == null) {
+    return res.json({ status: false });
   }
-)(req,res)
+  const accessToken = generateAccessToken(result._id);
+
+  res.json({
+    user:result,
+    accessToken,
+  })
 })
 
+router.post('/signup', async (req, res) => {
+  let tempt = await User.findOne({ 'username': req.body.username });
+  if(tempt!=null){
+    return res.json({status:false})
+  }
+  let Phong = Math.floor(Math.random() * 100000) + 1;
+    console.log(Phong);
+  let data ={
+    ... req.body,
+    Kids: Phong.toString()
+  }
+  let result = await User.insertMany(data);
 
-router.post('/signup', (req,res)=>{
-  passport.authenticate('signup',(err,user,info)=>{
-    if(err) return res.status(400).json(err)
-    if(info!=undefined){
-       return res.json(info.message)
-    }else{
-      req.logIn(user, (err)=>{
-        console.log(user)
-        if(err) return res.status(400).json(err)
-        User.findOne({'username':user.username},(err,logInUser)=>{
-          console.log(logInUser)
-          let newuser = {
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            role: req.body.role
-          }
-          User.findOneAndUpdate({'username': logInUser.username},newuser,err=>{
-            if(err) return res.status(400).json(err)
-            return res.status(200).json('User created')
-          })
-        })
-      })
-    }
-  })(req,res)
+  res.json(result[0]);
 })
+
+const generateAccessToken = userId => {
+  const payload = { userId };
+  const accessToken = jwt.sign(payload, "findKids", {
+    expiresIn: "1d"
+  });
+
+  return accessToken;
+}
+
 
 module.exports = router;

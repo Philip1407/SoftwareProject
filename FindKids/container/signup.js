@@ -13,10 +13,9 @@ class signup extends Component {
             </Block>
         );
     }
-    handleSignUp = async(username, password, firstname, lastname)=>{
+    handleSignUp = async(user)=>{
         const { SignUpUser } = this.props;
-        let check = await SignUpUser({username, password, firstname, lastname});
-        console.log(check)
+        let check = await SignUpUser(user);
         return check;
     }
 }

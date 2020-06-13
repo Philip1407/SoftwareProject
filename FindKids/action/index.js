@@ -1,67 +1,62 @@
-// import * as Axios from '../axios/ApiAxios'
+// import * as Axios from '../axios/api'
 import axiosService from '../axios/axios'
 
-import { apiAxios } from "../constants";
-import { Socket,record,action, location as currentlocation} from "../constants";
+import { api } from "../constants";
+import { Socket, record, action, location as currentlocation } from "../constants";
 
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import axios from '../axios/axios';
 
 export const login = (user) => {// đăng nhập
-    let login = `${apiAxios.LOGIN}?username=${user.username}&password=${user.password}`;
-    return async (dispatch)=>{
-        // let data = await axiosService.post(signup,user);
-        // console.log("apiAxios",data) //back end trả giá trị data về
-        console.log('new login')
-        await fetch(login,
-             {
-                method: 'POST',
-                body: JSON.stringify(user),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(data => data.json())
-            .then(result => {
-                if(result.auth===true)
-                    { 
-                        console.log(result.token)
-                        dispatch(getUser(result.user,result.token))
-                        return {status: 200}
-                    }
-                else return {status: 400}
-            })
+    return async (dispatch) => {
+        try {
+            let result = await fetch(api.LOGIN,
+                {
+                    method: 'POST',
+                    body: JSON.stringify(user),
+                });
+            let result1 = await result.json()
+            if (result1.status != false) {
+                return dispatch(getUser(result1.user, result1.accessToken))
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 }
 
 
 export const signup = (user) => { // đăng ký 
-    let signUp = apiAxios.SIGNUP;
-    return async (dispatch)=>{
-        // let data = await axiosService.post(signup,user);
-        // console.log("apiAxios",data) //back end trả giá trị data về
-        await fetch(signUp, {
-            method: 'POST',
-            body: JSON.stringify(user),
-            headers: {
-                'Content-Type': 'application/json'
+    return async (dispatch) => {
+        try {
+            let result = await fetch(api.SIGNUP,
+                {
+                    method: 'POST',
+                    body: JSON.stringify(user),
+                });
+            let result1 = await result.json()
+          
+            if (result1.status != false) {
+                return true
+            } else {
+                return false
             }
-        }).then(result => result.json())
-        .then(response=>{
-            console.log(response !=='User created')
-            if(response !=='User created') return {status: 400}
-            return {status:200}
-        })
+        } catch (error) {
+            console.error(error);
+        }
     }
+
 }
 
 export const uploadRecord = (data) => {
-    let uploadRecord = apiAxios.UPLOADRECORD;
+    let uploadRecord = api.UPLOADRECORD;
     console.log(uploadRecord)
     return async (dispatch) => {
         //    let abc= await axiosService.post(uploadRecord,{data});
-        //    console.log("apiAxios",abc.data) //back end trả giá trị data về
+        //    console.log("api",abc.data) //back end trả giá trị data về
         //  console.log("abc",data)
         await fetch(uploadRecord, {  //uploadRecord la đường dẫn route bên báckend
             method: 'POST',
@@ -70,7 +65,7 @@ export const uploadRecord = (data) => {
         // console.log('Cloudinary Info:',await abc.json());
 
         //tải reacord về máy
-        
+
         // let uri = await FileSystem.downloadAsync(
         //     uploadRecord + "/down",
         //     FileSystem.documentDirectory + 'small.m4a'
@@ -90,30 +85,57 @@ export const uploadRecord = (data) => {
         //  });
         // //  console.log(media)
         //  // cần fix tạo 1 mảng uri lưu vào db
-        
+
     }
 }
 
 
-export const getRecordtoRedux = (newAsset) => { 
+
+export const getRecordtoRedux = (newAsset) => {
     return {
         type: record.GET_RECORD,
         newAsset
     }
 }
 
-export const getlocationcurrent = (location) => { 
-    console.log("abababa",location)
+export const getlocationcurrentAPI = (Kids,token,day) => {
+    return async (dispatch) => {
+        try {
+            let result = await fetch(api.LOCATION,
+                {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token':  token
+                      },
+                    body: JSON.stringify({Kids,day})
+                });
+            let location = await result.json();
+            if (location.status != false) {
+                return dispatch(getlocationcurrent(location))
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+
+
+export const getlocationcurrent = (location) => {
     return {
         type: currentlocation.location_current,
         location
     }
 }
 
-export const getUser = (user, jwt)=>{
-    return{
+export const getUser = (user, accessToken) => {
+    // console.log("action kQ: ", user, "  tocken: ", accessToken)
+    return {
         type: action.GET_USER,
         user,
-        jwt
+        accessToken
     }
 }

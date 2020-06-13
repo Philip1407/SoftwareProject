@@ -20,8 +20,8 @@ app.use(passport.initialize())
 
 //Connect to MongoDB
 
-const uri = "mongodb+srv://ngujen1407:123@cluster0-ufaxv.mongodb.net/FindKid?retryWrites=true&w=majority"
-
+//'mongodb://localhost/mydatabase'
+const uri ="mongodb://172.17.0.1:2717/mymongo"
 mongoose.connect(
   uri,
   { useNewUrlParser: true, useUnifiedTopology: true },
@@ -34,13 +34,18 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
-app.use(express.json());
+app.use(express.json({
+  type: ['application/json', 'text/plain']
+}));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(skio);
+
+const verify = require('./middlewares/auth.mdw');
+
 app.use('/', indexRouter);
-app.use('/users',passport.authenticate('jwt', {session: false}), usersRouter);
+app.use('/users',verify, usersRouter);
 app.use('/uploadRecord', uploadRouter);
 app.use('/auth', authRouter)
 
@@ -57,8 +62,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(err.status || 500).json({status:false});
 });
 
 module.exports = app;

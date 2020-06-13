@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {
-    Text,
     View,
     StyleSheet,
     Dimensions,
+   
 } from 'react-native';
 import MapView, { Marker, Callout, Polyline } from "react-native-maps";
 import isEqual from 'lodash/isEqual';
+import { Button, Text, Block } from "../components";
 import * as theme from "../constants/theme";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as Permissions from 'expo-permissions';
@@ -28,12 +29,7 @@ class Map extends Component {
                 longitude: null
             },
             poi: null,
-            // locationMykids: {
-            //     latitude: 10.862035448000977,
-            //     longitude: 106.74766380339861,
-            // },
-            // line :[{latitude: 10.862035448000977,
-            //     longitude: 106.74766380339861}]
+           history:0
         };
         // this.onPoiClick = this.onPoiClick.bind(this);
     }
@@ -94,6 +90,56 @@ class Map extends Component {
             // { enableHighAccuracy: true, timeout: 20000, maximumAge: 2000 }); return về mỗi khi thay đổi 100m
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 1 });//return về mỗi khi thay đổi 1m
     }
+
+    hisToday=()=>{
+        let {history}= this.state;
+        
+        if(history===1){
+            this.setState({
+                history:0
+            })
+            this.props.getline(0);
+        }else{
+            this.setState({
+                history:1
+            })
+            this.props.getline(1);
+        }
+        
+    }
+    hisyesterday=()=>{
+        let {history}= this.state;
+        
+        if(history===2){
+            this.setState({
+                history:0
+            })
+            this.props.getline(0);
+        }else{
+            this.setState({
+                history:2
+            })
+            this.props.getline(2);
+        }
+       
+    }
+    his3ago=()=>{
+        let {history}= this.state;
+        
+        if(history===3){
+            this.setState({
+                history:0
+            })
+            this.props.getline(0);
+        }else{
+            this.setState({
+                history:3
+            })
+            this.props.getline(3);
+        }
+      
+    }
+
     render() {
         let { coordinate , locationMykids} = this.props;
         if (!coordinate) {
@@ -103,8 +149,6 @@ class Map extends Component {
             }
             coordinate = myPosition;
         }
-
-        console.log("locationMykids",locationMykids)
         return (
             <View style={styles.container}>
                 <MapView
@@ -120,6 +164,41 @@ class Map extends Component {
                     showsUserLocation={true} >
                      {this.props.children}
                 </MapView>
+                <View style={styles.botton} >
+                <Button gradient style={styles.history} onPress={this.hisToday}>
+                    {this.state.history===1 ? (
+                        <Text bold black center>
+                    Today
+                  </Text>
+                    ):(
+                        <Text bold white center>
+                    Today
+                  </Text>
+                    )}
+                 </Button>
+                 <Button gradient style={styles.history} onPress={this.hisyesterday} >
+                    {this.state.history===2 ? (
+                        <Text bold black center>
+                    Yesterday
+                  </Text>
+                    ):(
+                        <Text bold white center>
+                    Yesterday
+                  </Text>
+                    )}
+                 </Button>
+                 <Button gradient style={styles.history} onPress={this.his3ago}>
+                    {this.state.history===3 ? (
+                        <Text bold black center>
+                    3 ago
+                  </Text>
+                    ):(
+                        <Text bold white center>
+                    3 ago
+                  </Text>
+                    )}
+                 </Button>
+                </View>
             </View>
         );
     }
@@ -149,6 +228,17 @@ const styles = StyleSheet.create({
         height: 12,
         borderRadius: 12,
         backgroundColor: "#3353FB"
+    },
+    botton:{
+       
+            flexDirection: 'row',
+            justifyContent: 'space-around'
+    },
+    history:{
+        width: 100,
+        height: 50,
+        borderColor: 'red'
     }
+
 })
 

@@ -1,14 +1,17 @@
-import { action } from "../constants";
-import {GET_USER} from '../constants/action'
+// import { action } from "../constants";
+import { action as type } from "../constants";
 
-let InitialState = {};
+let InitialState = { username: '' };
 
 const Reducer = (state = InitialState, action) => {
+
     switch (action.type) {
-        case GET_USER:
+        case type.GET_USER:
             {
-                console.log(action.type)
-                return {...state, user: action.user, jwt: action.jwt}
+                state = {
+                    user: action.user,
+                    accessToken: action.accessToken
+                }
             }
         default: return state
     }

@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { uploadRecord } from './../action';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
-import { apiAxios } from "../constants";
+import { api } from "../constants";
 class listen extends Component {
     constructor(props) {
         super(props);

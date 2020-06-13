@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 import { Card, Badge, Button, Block, Text } from "../components";
-import { theme} from "../constants";
+import { theme } from "../constants";
 import logoMap from './../assets/icons/logoMap.png'
 import logoRecord from './../assets/icons/record.png'
 import logoActivities from './../assets/icons/logoActivities.png'
@@ -17,22 +17,23 @@ import avatar from './../assets/images/avatar.png'
 const { width } = Dimensions.get("window");
 
 class Browse extends Component {
-  QuanLyTre=()=>{
-    let Phong = Math.floor(Math.random() * 100000) + 1;
-    console.log(Phong);
-    let PhongString = Phong.toString();
+  QuanLyTre = async () => {
+    let Phong = await this.props.QuanLyTre();
     Alert.alert(
       "Room",
-      PhongString,
+      Phong,
       [
         { text: "OK", onPress: () => console.log("OK Pressed") }
       ],
       { cancelable: true }
     );
-    this.props.QuanLyTre(Phong);
+
   }
-  Notifications=()=>{
+  Notifications = () => {
     this.props.Notifications();
+  }
+  showMap=()=>{
+    this.props.showMap();
   }
   render() {
     const { navigation } = this.props;
@@ -50,92 +51,92 @@ class Browse extends Component {
           showsVerticalScrollIndicator={false}
           style={{ paddingVertical: theme.sizes.base * 2 }}>
           <Block flex={false} row space="between" style={styles.categories}>
-              <TouchableOpacity
-               onPress={() => navigation.navigate("Map")}>
-                <Card center middle shadow style={styles.category}>
-                  <Badge
-                    margin={[0, 0, 15]}
-                    size={50}
-                    color="rgba(41,216,143,0.20)">
-                    <Image source={logoMap} style={styles.img} />
-                  </Badge>
-                  <Text medium height={20}>
-                    MAP
+            <TouchableOpacity
+              onPress={this.showMap}>
+              <Card center middle shadow style={styles.category}>
+                <Badge
+                  margin={[0, 0, 15]}
+                  size={50}
+                  color="rgba(41,216,143,0.20)">
+                  <Image source={logoMap} style={styles.img} />
+                </Badge>
+                <Text medium height={20}>
+                  MAP
                   </Text>
-                  <Text gray caption>
+                <Text gray caption>
                   follow
                   </Text>
-                </Card>
-              </TouchableOpacity>
-              <TouchableOpacity
-               onPress={() => navigation.navigate("Listen")}>
-                <Card center middle shadow style={styles.category}>
-                  <Badge
-                    margin={[0, 0, 15]}
-                    size={50}
-                    color="rgba(41,216,143,0.20)">
-                    <Image source={logoRecord} style={styles.img} />
-                  </Badge>
-                  <Text medium height={20}>
-                   Listen
+              </Card>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Listen")}>
+              <Card center middle shadow style={styles.category}>
+                <Badge
+                  margin={[0, 0, 15]}
+                  size={50}
+                  color="rgba(41,216,143,0.20)">
+                  <Image source={logoRecord} style={styles.img} />
+                </Badge>
+                <Text medium height={20}>
+                  Listen
                   </Text>
-                  <Text gray caption>
+                <Text gray caption>
                   follow
                   </Text>
-                </Card>
-              </TouchableOpacity>
-              <TouchableOpacity
-               onPress={() => navigation.navigate("Activities")}>
-                <Card center middle shadow style={styles.category}>
-                  <Badge
-                    margin={[0, 0, 15]}
-                    size={50}
-                    color="rgba(41,216,143,0.20)">
-                    <Image source={logoActivities} style={styles.img} />
-                  </Badge>
-                  <Text medium height={20}>
-                   Activities
+              </Card>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Activities")}>
+              <Card center middle shadow style={styles.category}>
+                <Badge
+                  margin={[0, 0, 15]}
+                  size={50}
+                  color="rgba(41,216,143,0.20)">
+                  <Image source={logoActivities} style={styles.img} />
+                </Badge>
+                <Text medium height={20}>
+                  Activities
                   </Text>
-                  <Text gray caption>
+                <Text gray caption>
                   follow
                   </Text>
-                </Card>
-              </TouchableOpacity>
-              <TouchableOpacity
-               onPress={this.QuanLyTre}>
-                <Card center middle shadow style={styles.category}>
-                  <Badge
-                    margin={[0, 0, 15]}
-                    size={50}
-                    color="rgba(41,216,143,0.20)">
-                    <Image source={logoActivities} style={styles.img} />
-                  </Badge>
-                  <Text medium height={20}>
-                   Thêm trẻ quản lý
-                  </Text>
-                  <Text gray caption>
+              </Card>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.QuanLyTre}>
+              <Card center middle shadow style={styles.category}>
+                <Badge
+                  margin={[0, 0, 15]}
+                  size={50}
+                  color="rgba(41,216,143,0.20)">
+                  <Image source={logoActivities} style={styles.img} />
+                </Badge>
+                <Text medium height={20}>
                   Thêm trẻ quản lý
                   </Text>
-                </Card>
-              </TouchableOpacity>
-              <TouchableOpacity
-               onPress={this.Notifications}>
-                <Card center middle shadow style={styles.category}>
-                  <Badge
-                    margin={[0, 0, 15]}
-                    size={50}
-                    color="rgba(41,216,143,0.20)">
-                    <Image source={logoActivities} style={styles.img} />
-                  </Badge>
-                  <Text medium height={20}>
+                <Text gray caption>
+                  Thêm trẻ quản lý
+                  </Text>
+              </Card>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this.Notifications}>
+              <Card center middle shadow style={styles.category}>
+                <Badge
+                  margin={[0, 0, 15]}
+                  size={50}
+                  color="rgba(41,216,143,0.20)">
+                  <Image source={logoActivities} style={styles.img} />
+                </Badge>
+                <Text medium height={20}>
                   Notifications
                   </Text>
-                  <Text gray caption>
+                <Text gray caption>
                   Notifications
                   </Text>
-                </Card>
-              </TouchableOpacity>
-          
+              </Card>
+            </TouchableOpacity>
+
           </Block>
         </ScrollView>
       </Block>
@@ -147,13 +148,13 @@ class Browse extends Component {
 export default Browse;
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     backgroundColor: theme.colors.white,
   },
   header: {
     paddingHorizontal: theme.sizes.base * 2
   },
-  img:{
+  img: {
     height: theme.sizes.base * 2.2,
     width: theme.sizes.base * 2.2
   },

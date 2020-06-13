@@ -3,7 +3,7 @@ import BrowseScreens from '../screens/Browse'
 import { Block} from "../components";
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import {login as LoginAPI,uploadRecord} from '../action'
+import {uploadRecord,getlocationcurrentAPI} from '../action'
 import isEqual from 'lodash/isEqual';
 import * as Permissions from 'expo-permissions';
 import { Audio } from 'expo-av';
@@ -58,6 +58,13 @@ class Browse extends Component {
           let newAsset = await MediaLibrary.createAssetAsync(uri.uri);
           await MediaLibrary.createAlbumAsync('DownloadRecording', newAsset);
         })
+
+        // props.socket.on("locationcerrnet", function (data) {
+        //     data = JSON.parse(data);
+        //     console.log("map: ", data.region)
+        //     props.getlocationcurrent(data.region)
+        // })
+
         this.state = {
             myPosition: null,
             region: {
@@ -70,13 +77,15 @@ class Browse extends Component {
         const {navigation,locationcurrent,socket}=this.props;
         return (
             <Block>
-                <BrowseScreens navigation={navigation} QuanLyTre={this.QuanLyTre} Notifications={this.Notifications}></BrowseScreens>
+                <BrowseScreens navigation={navigation} QuanLyTre={this.QuanLyTre} Notifications={this.Notifications} showMap={this.showMap}></BrowseScreens>
             </Block>
         );
     }
     componentDidMount=()=> {
+       
         this.watchLocation();
         Permissions.askAsync(Permissions.LOCATION,Permissions.AUDIO_RECORDING, Permissions.CAMERA_ROLL);
+       
     }
     componentWillUnmount=()=> {
         if (this.watchID) {
@@ -86,18 +95,17 @@ class Browse extends Component {
 
     componentWillUpdate = async()=>{
         // this.watchLocation();
-        let {socket} = this.props;
-        let data ={id: socket.id, region: this.state.region }
+        let {socket,user } = this.props;
+        let data ={id: socket.id, region: this.state.region, username:user.username}
         await socket.emit("location",JSON.stringify(data));
     }
 
-    QuanLyTre = (Phong) => {
-        var { socket } = this.props;
-        console.log("QuanLyTre + ten máy con"); //lấy id máy con vào db
-        // let Phong = Math.floor(Math.random() * 100000) + 1;
-        let data = { Phong, id: socket.id };
-        console.log(data);
+    QuanLyTre = () => {
+        var { socket ,user} = this.props;
+        let data = { Phong:user.user.Kids, id: socket.id };
+        
         socket.emit("QuanLyTre", JSON.stringify(data)); //UserPH lấy từ db
+        return user.user.Kids;
     };
 
     watchLocation= async ()=> { // get current location
@@ -113,6 +121,7 @@ class Browse extends Component {
                             longitude: myPosition.longitude
                         }
                     });
+                    
                     // this.props.getlocationcurrent(this.state.region)
                 }
             },
@@ -122,7 +131,14 @@ class Browse extends Component {
     }
 
     Notifications=()=>{
-        console.log("ababababab")
+        console.log("ababababab ",this.props.user)
+
+    }
+
+    showMap= async()=>{
+        let {user,getlocationcurrent} = this.props;
+        await getlocationcurrent(user.user.Kids,user.accessToken,1);
+        this.props.navigation.navigate("Map");
     }
 
 }
@@ -130,12 +146,13 @@ const mapStatetoProps = (state) => {
     return {
         socket: state.socket,
         // locationcurrent: state.locationcurrent,
+        user:state.User
     }
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        LoginUser : bindActionCreators(LoginAPI, dispatch),
         uploadRecord: bindActionCreators(uploadRecord, dispatch),
+        getlocationcurrent: bindActionCreators(getlocationcurrentAPI, dispatch),
     }
 }
 

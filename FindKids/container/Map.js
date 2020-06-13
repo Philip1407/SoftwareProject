@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import MapScreens from '../screens/Map'
 import { Block } from "../components";
 import { connect } from 'react-redux'
-import {View} from 'react-native';
+import { View } from 'react-native';
 import MapView, { Marker, Polyline } from "react-native-maps";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { bindActionCreators } from 'redux';
-import {getlocationcurrent} from '../action'
+import { getlocationcurrentAPI } from '../action'
+import { Button } from "../components";
 import { action } from '../constants';
 var a;
 class Map extends Component {
     constructor(props) {
         super(props);
-        a= this;
+        a = this;
         props.socket.on("locationcerrnet", function (data) {
             data = JSON.parse(data);
-            console.log("map: ",data.region)
+            console.log("map: ", data.region)
             a.setState({
                 locationMykids: data.region,
                 line: [...a.state.line, data.region]
@@ -24,48 +25,49 @@ class Map extends Component {
         })
         this.state = {
             locationMykids: null,
-            line:[],
+            line: [],
         }
     }
     render() {
-        var { navigation, socket , locationcurrent} = this.props;
-        var {locationMykids,line} = this.state;
+        var { navigation, socket } = this.props;
+        var { locationMykids, line } = this.state;
         return (
             <Block>
-                <MapScreens navigation={navigation} socket={socket} locationMykids={locationMykids} >
-                    {this.showLine(line,locationMykids)}
+                <MapScreens navigation={navigation} socket={socket} locationMykids={locationMykids} getline={this.getline} >
+                    {this.showLine(line, locationMykids)}
                 </MapScreens>
             </Block>
         );
     }
 
-    showLine = (Lines,lo) => {
-        var resultline=null;
-        var result =null;
+    showLine = (Lines, lo) => {
+        var resultline = null;
+        var result = null;
         if (Lines.length > 0) {
             resultline = (
-                    <Polyline
-                        coordinates={Lines}
-                        // coordinates={this.state.line}
+                <Polyline
+                    coordinates={Lines}
+                    // coordinates={this.state.line}
 
-                        strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
-                        strokeColors={[
-                            '#7F0000',
-                            '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
-                            '#B24112',
-                            '#E5845C',
-                            '#238C23',
-                            '#7F0000'
-                        ]}
-                        strokeWidth={6}
-                    />)
+                    strokeColor="#000" // fallback for when `strokeColors` is not supported by the map-provider
+                    strokeColors={[
+                        '#7F0000',
+                        '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
+                        '#B24112',
+                        '#E5845C',
+                        '#238C23',
+                        '#7F0000'
+                    ]}
+                    strokeWidth={6}
+                />)
 
         }
-        if(lo!=null){
-            result =(
+        if (lo != null) {
+            result = (
                 <View>
-                <Marker coordinate={{
-                       ...lo,
+               
+                    <Marker coordinate={{
+                        ...lo,
                         latitudeDelta: 0.03,
                         longitudeDelta: 0.03
                     }}>
@@ -78,17 +80,32 @@ class Map extends Component {
         return result;
     }
 
-    // componentDidMount = async () => {
-    //     let { socket, getlocationcurrent} = this.props;
-    //     await socket.on("locationcerrnet", function (data) {
-    //         data = JSON.parse(data);
-    //         console.log("map: ",data.region)
-    //         a.setState({
-    //             locationMykids: data.region,
-    //         });
-    //         getlocationcurrent(data.region)
-    //     })
-    // }
+    componentDidMount = async () => {
+        let { getlocationcurrent,user,locationcurrent} = this.props;
+        // await getlocationcurrent(user.user.Kids,user.accessToken);
+        // console.log("loda: ",locationcurrent.length)
+        a.setState({
+            locationMykids: locationcurrent[locationcurrent.length-1],
+            // line: locationcurrent
+        })
+       
+    }
+
+    getline=async(history)=>{
+        let { locationcurrent,user,getlocationcurrent} = this.props;
+        if(history !=0){
+            await getlocationcurrent(user.user.Kids,user.accessToken,history);
+            a.setState({
+                locationMykids: locationcurrent[locationcurrent.length-1],
+                line: locationcurrent
+            })
+        }else{
+            a.setState({
+                locationMykids: locationcurrent[locationcurrent.length-1],
+                line: []
+            })
+        }
+    }
 
     // componentWillUpdate = async()=>{
     //     let { socket, getlocationcurrent} = this.props;
@@ -106,11 +123,12 @@ const mapStatetoProps = (state) => {
     return {
         socket: state.socket,
         locationcurrent: state.locationcurrent,
+        user :state.User
     }
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
-        getlocationcurrent:bindActionCreators(getlocationcurrent, dispatch),
+        getlocationcurrent: bindActionCreators(getlocationcurrentAPI, dispatch),
     }
 }
 

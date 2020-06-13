@@ -9,13 +9,12 @@ import {
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
 
-const VALID_USERNAME = "Tuan";
-const VALID_PASSWORD = "123456";
+
 
 export default class Login extends Component {
   state = {
-    username: VALID_USERNAME,
-    password: VALID_PASSWORD,
+    username: "",
+    password: "",
     errors: [],
     loading: false
   };
@@ -28,8 +27,7 @@ export default class Login extends Component {
     Keyboard.dismiss();
     this.setState({ loading: true });
     // check with backend API or with some static data
-    console.log(check)
-    if (check.status === 200) {
+    if (check != false) {
       navigation.navigate("Browse");
     }
     else {

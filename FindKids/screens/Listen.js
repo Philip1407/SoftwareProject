@@ -14,7 +14,7 @@ import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
 import * as DocumentPicker from 'expo-document-picker';
-import { apiAxios } from "../constants";
+import { api } from "../constants";
 var ag;
 class Listen extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class Listen extends Component {
     props.socket.on("TaiFileGhiAmVeMayPH",async function(data){
       console.log("6   "+props.socket.id+"   Nhaan   "+data)
       let uri = await FileSystem.downloadAsync(
-        apiAxios.UPLOADRECORD + "/down",
+        api.UPLOADRECORD + "/down",
         FileSystem.documentDirectory + 'small.m4a'
     )
     // console.log("day la uri: ",uri)   

@@ -1,7 +1,7 @@
-import { apiAxios } from "../constants";
+import { api } from "../constants";
 import io from 'socket.io-client';
 
-var socket= io(apiAxios.LOCALHOST,{ jsonp: false, 'forceNew': true });
+var socket= io(api.LOCALHOST,{ jsonp: false, 'forceNew': true });
 const InitialState = socket ? socket : { }
 const Reducer = (state = InitialState, action) => {
     switch (action.type) {

@@ -18,19 +18,18 @@ class login extends Component {
     handleLogin= async (username,password)=>{
         const { LoginUser } = this.props;
         let check = await LoginUser({username,password});
-        console.log(check)
         return check;
     }
 }
-// const mapStatetoProps = (state) => {
-//     return {
-       
-//     }
-// }
+const mapStatetoProps = (state) => {
+    return {
+        User: state.User
+    }
+}
 const mapDispatchtoProps = (dispatch) => {
     return {
         LoginUser : bindActionCreators(LoginAPI, dispatch),
     }
 }
 
-export default connect(null,mapDispatchtoProps)(login);
+export default connect(mapStatetoProps,mapDispatchtoProps)(login);
