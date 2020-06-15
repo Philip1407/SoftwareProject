@@ -14,6 +14,7 @@ import logoMap from './../assets/icons/logoMap.png'
 import logoRecord from './../assets/icons/record.png'
 import logoActivities from './../assets/icons/logoActivities.png'
 import avatar from './../assets/images/avatar.png'
+import * as SMS from 'expo-sms';
 const { width } = Dimensions.get("window");
 
 class Browse extends Component {
@@ -35,6 +36,13 @@ class Browse extends Component {
   showMap=()=>{
     this.props.showMap();
   }
+  onPress = async () => {
+    const status = await SMS.sendSMSAsync(
+      '0979046876',  // nhập số điện thoại người nhận tin
+      'you up?'
+    );
+    console.log(status);
+  };
   render() {
     const { navigation } = this.props;
     return (
@@ -136,7 +144,23 @@ class Browse extends Component {
                   </Text>
               </Card>
             </TouchableOpacity>
-
+            <TouchableOpacity
+              onPress={this.onPress}>
+              <Card center middle shadow style={styles.category}>
+                <Badge
+                  margin={[0, 0, 15]}
+                  size={50}
+                  color="rgba(41,216,143,0.20)">
+                  <Image source={logoActivities} style={styles.img} />
+                </Badge>
+                <Text medium height={20}>
+                  SendSMS
+                  </Text>
+                <Text gray caption>
+                  SendSMS
+                  </Text>
+              </Card>
+            </TouchableOpacity>
           </Block>
         </ScrollView>
       </Block>
