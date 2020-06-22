@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View, Button, Vibration, Platform } from 'react-native';
+import { Text, View, TouchableOpacity, Vibration, Platform, StyleSheet } from 'react-native';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
-export default class AppContainer extends React.Component {
+export class Activities extends React.Component {
   state = {
     expoPushToken: '',
     notification: {},
@@ -41,12 +41,6 @@ export default class AppContainer extends React.Component {
 
   componentDidMount() {
     this.registerForPushNotificationsAsync();
-
-    // Handle notifications that are received or selected while the app
-    // is open. If the app was closed and then opened by tapping the
-    // notification (rather than just tapping the app icon to open it),
-    // this function will fire on the next tick after the app starts
-    // with the notification data.
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
   }
 
@@ -56,14 +50,13 @@ export default class AppContainer extends React.Component {
     this.setState({ notification: notification });
   };
 
-  // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/dashboard/notifications
-  sendPushNotification = async () => {
+  sendPushNotification = async (text) => {
     const message = {
       to: this.state.expoPushToken,
       sound: 'default',
-      title: 'Original Title',
-      body: 'And here is the body!',
-      data: { data: 'goes here' },
+      title: 'child: ',
+      body: text,
+      data: { data: 'Help me' },
       _displayInForeground: true,
     };
     const response = await fetch('https://exp.host/--/api/v2/push/send', {
@@ -75,30 +68,65 @@ export default class AppContainer extends React.Component {
       },
       body: JSON.stringify(message),
     });
-    console.log("abc")
   };
 
   render() {
     return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'space-around',
-        }}>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Text>Origin: {this.state.notification.origin}</Text>
-          <Text>Data: {JSON.stringify(this.state.notification.data)}</Text>
+      <View style={styles.container}>
+         <Text style={{marginLeft: 20, marginBottom: 20, fontSize: 25,marginTop: 35}}>On press to help: </Text>
+        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 50 }}>
+          <TouchableOpacity onPress={() => this.sendPushNotification("Gặp người lạ (Có quen biết với bố mẹ)")}>
+          <View style={{...styles.button, backgroundColor: 'limegreen'}}>
+            <Text style={styles.red}>Gặp người lạ (Có quen biết với bố mẹ)</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.sendPushNotification("Lạc đường")}>
+        <View style={{...styles.button, backgroundColor: 'orange'}}>
+            <Text style={styles.red}>Lạc đường</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.sendPushNotification("Gặp tai nạn - cần trợ giúp ( Gọi xe cứu thương,...)")}>
+        <View style={{...styles.button, backgroundColor: 'orange'}}>
+            <Text style={styles.red}>Gặp tai nạn - cần trợ giúp ( Gọi xe cứu thương,...)</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.sendPushNotification("Cần sự trợ giúp tại chỗ")}>
+        <View style={{...styles.button, backgroundColor: 'tomato'}}>
+            <Text style={styles.red}>Cần sự trợ giúp tại chỗ</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.sendPushNotification("Cần gọi cảnh sát")}>
+          <View style={{...styles.button, backgroundColor: 'tomato'}}>
+            <Text style={styles.red}>Cần gọi cảnh sát</Text>
+          </View>
+        </TouchableOpacity>
         </View>
-        <Button title={'Press to Send Notification'} onPress={() => this.sendPushNotification()} />
       </View>
     );
   }
 }
-
-/*  TO GET PUSH RECEIPTS, RUN THE FOLLOWING COMMAND IN TERMINAL, WITH THE RECEIPTID SHOWN IN THE CONSOLE LOGS
-
-    curl -H "Content-Type: application/json" -X POST "https://exp.host/--/api/v2/push/getReceipts" -d '{
-      "ids": ["YOUR RECEIPTID STRING HERE"]
-      }'
-*/
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
+  bigBlue: {
+    color: 'red',
+    fontWeight: 'bold',
+    fontSize: 30,
+  },
+  red: {
+    color: 'white',
+    fontSize: 18
+  },
+  button: {
+    marginBottom: 30,
+    alignItems: 'center',
+    padding: 15,
+    borderRadius: 120,
+    marginLeft: 20,
+    marginRight: 20,
+    width: 350
+  },
+});
+export default Activities;
