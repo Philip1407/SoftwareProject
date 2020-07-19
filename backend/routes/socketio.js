@@ -1,17 +1,18 @@
 module.exports = function (server) {
-    var io = require("socket.io")(server);
-    let User = require('../models/user');
-    let location = require('../models/location');
-    const moment = require('moment');
+  var io = require("socket.io")(server);
+  let User = require("../models/user");
+  let location = require("../models/location");
+  const moment = require("moment");
 
-    io.on("connection",async function(socket){
-        console.log("cos nguoi ket noi", socket.id);
-        socket.on("QuanLyTre",function(data){ //{tenphong socedid iduser}
-            data=JSON.parse(data);
-            socket.join(data.Phong);
-            socket.Phong=data.Phong;
-            console.log(socket.adapter.rooms)
-        })
+  io.on("connection", async function (socket) {
+    console.log("cos nguoi ket noi", socket.id);
+    socket.on("QuanLyTre", function (data) {
+      //{tenphong socedid iduser}
+      data = JSON.parse(data);
+      socket.join(data.Phong);
+      socket.Phong = data.Phong;
+      console.log(socket.adapter.rooms);
+    });
 
         await socket.on("location",async function(data){ 
             let adata= JSON.parse(data); //{ ...data.region, date} 

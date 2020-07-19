@@ -56,7 +56,7 @@ class Browse extends Component {
 
   onPress = async () => {
     const status = await SMS.sendSMSAsync(
-      '0773862987',  // nhập số điện thoại người nhận tin
+      '0961657097',  // nhập số điện thoại người nhận tin
       'you up?'
     );
     console.log(status);

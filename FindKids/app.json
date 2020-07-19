@@ -1,33 +1,23 @@
 {
   "expo": {
-    "name": "FindKids",
-    "slug": "FindKids",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android":{
-      "package" : " .dacnmp",
-      "versionCode" : 1
-    }
-    
+      "name": "FindKids",
+      "slug": "FindKids",
+      "platforms": ["android"],
+      "version": "1.0.0",
+      "orientation": "portrait",
+      "icon": "./assets/icon.png",
+      "splash": {
+          "image": "./assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+      },
+      "updates": {
+          "fallbackToCacheTimeout": 0
+      },
+      "assetBundlePatterns": ["**/*"],
+      "android": {
+          "package": "com.yourcompany.yourappname",
+          "versionCode": 1
+      }
   }
 }
