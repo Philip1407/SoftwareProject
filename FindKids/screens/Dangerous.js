@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Children } from "react";
 import {
     Dimensions,
     Image,
@@ -50,14 +50,14 @@ class Activities extends Component {
             <Block style={styles.container}>
                 <Block flex={false} row center space="between" style={styles.header}>
                     <Text h1 bold>
-                        Activities
+                    Dangerous
                     </Text>
                 </Block>
                 <Block flex={false} row style={styles.tabs}>
                     {tabs.map(tab => this.renderTab(tab))}
                 </Block>
                 <Block  padding={[0, theme.sizes.base * 2,0,theme.sizes.base * 2]} >
-                    <Text style={styles.table} h1 bold>table</Text>
+                    {this.props.children}
                 </Block>
             </Block>
         );

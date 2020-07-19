@@ -12,9 +12,10 @@ import SignUp from "../container/signup";
 import Map from "../container/Map";
 import Browse from "../container/Browse";
 import Listen from "../container/listen";
-import Activities from "../screens/Activities";
+import Dangerous from "../container/Dangerous";
 import Settings from "../screens/Settings";
 import LoginForKids from "../container/LoginForKids"
+import BrowseKids from "../container/BrowseKids"
 import { theme } from "../constants";
 
 const screens = createStackNavigator(
@@ -26,9 +27,10 @@ const screens = createStackNavigator(
     Map,
     Browse,
     Listen,
-    Activities,
+    Dangerous,
     Settings,
-    LoginForKids
+    LoginForKids,
+    BrowseKids
   },
   {
     defaultNavigationOptions: {

@@ -6,7 +6,8 @@ import { View } from 'react-native';
 import MapView, { Marker, Polyline } from "react-native-maps";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { bindActionCreators } from 'redux';
-import { getlocationcurrentAPI } from '../action'
+import { getlocationcurrentAPI ,dangerousAPI} from '../action'
+const geolib = require('geolib');
 import { Button } from "../components";
 import { action } from '../constants';
 var a;
@@ -33,7 +34,11 @@ class Map extends Component {
         var { locationMykids, line } = this.state;
         return (
             <Block>
-                <MapScreens navigation={navigation} socket={socket} locationMykids={locationMykids} getline={this.getline} >
+                <MapScreens navigation={navigation} 
+                            socket={socket} 
+                            locationMykids={locationMykids} 
+                            getline={this.getline} 
+                            onPoiClick={this.onPoiClick}>
                     {this.showLine(line, locationMykids)}
                 </MapScreens>
             </Block>
@@ -81,9 +86,9 @@ class Map extends Component {
     }
 
     componentDidMount = async () => {
-        let { getlocationcurrent,user,locationcurrent} = this.props;
+        let { locationcurrent} = this.props;
         // await getlocationcurrent(user.user.Kids,user.accessToken);
-        // console.log("loda: ",locationcurrent.length)
+        // console.log("listdangerous: ",listdangerous)
         a.setState({
             locationMykids: locationcurrent[locationcurrent.length-1],
             // line: locationcurrent
@@ -107,28 +112,37 @@ class Map extends Component {
         }
     }
 
-    // componentWillUpdate = async()=>{
-    //     let { socket, getlocationcurrent} = this.props;
-    //     await socket.on("locationcerrnet", function (data) {
-    //         data = JSON.parse(data);
-    //         console.log("map: ",data.region)
-    //         a.setState({
-    //             locationMykids: data.region,
-    //         });
-    //         getlocationcurrent(data.region)
-    //     })
-    // }
+    onPoiClick = async (poi)=>{
+        let {user,dangerous} = this.props;
+        // let myloca = this.state.region;
+        // let mypoi = poi.coordinate;
+        // // console.log("myloca: ",myloca)
+        // // console.log("mypoi: ",mypoi)
+        // let re =geolib.isPointWithinRadius(
+        //     myloca,
+        //     mypoi,
+        //     5000
+        // );
+        // console.log("re: ",re)
+
+        // console.log("user",user.user._id)
+        let a = await dangerous({poi,_id:user.user._id},user.accessToken)
+        console.log("aaaa: ",a)
+    }
+
 }
 const mapStatetoProps = (state) => {
     return {
         socket: state.socket,
         locationcurrent: state.locationcurrent,
-        user :state.User
+        user :state.User,
+        
     }
 }
 const mapDispatchtoProps = (dispatch) => {
     return {
         getlocationcurrent: bindActionCreators(getlocationcurrentAPI, dispatch),
+        dangerous: bindActionCreators(dangerousAPI, dispatch),
     }
 }
 

@@ -47,6 +47,13 @@ module.exports = function (server) {
             console.log("5  "+socket.id+ "  Nhaan  " + data)
             socket.to(socket.Phong).emit('TaiFileGhiAmVeMayPH',socket.id);
         })
+
+
+        socket.on("SendDangerous",function(data){
+            console.log("SendDangerous",data)
+            socket.to(socket.Phong).emit('SendDangerousSV',data);
+        })
+
         socket.on("disconnect",function(socket){
             console.log("Ngat ket noi",socket.id)
         })

@@ -23,7 +23,7 @@ class LoginKid extends Component {
         const { navigation,socket} = this.props;
         let data = { Phong:code , id: socket.id };
         socket.emit("QuanLyTre", JSON.stringify(data));
-        navigation.navigate("Browse");
+        navigation.navigate("BrowseKids");
        }
 }
 const mapStatetoProps = (state) => {

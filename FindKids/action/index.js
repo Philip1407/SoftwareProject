@@ -28,7 +28,6 @@ export const login = (user) => {// đăng nhập
     }
 }
 
-
 export const signup = (user) => { // đăng ký 
     return async (dispatch) => {
         try {
@@ -89,8 +88,6 @@ export const uploadRecord = (data) => {
     }
 }
 
-
-
 export const getRecordtoRedux = (newAsset) => {
     return {
         type: record.GET_RECORD,
@@ -123,7 +120,6 @@ export const getlocationcurrentAPI = (Kids,token,day) => {
     }
 }
 
-
 export const getlocationcurrent = (location) => {
     return {
         type: currentlocation.location_current,
@@ -137,5 +133,63 @@ export const getUser = (user, accessToken) => {
         type: action.GET_USER,
         user,
         accessToken
+    }
+}
+
+export const dangerousAPI =(data,token)=>{
+    return async () => {
+        try {
+            console.log("p: ",data)
+            let result = await fetch(api.DANGEROUS,
+                {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token':  token
+                      },
+                    body: JSON.stringify(data),
+                });
+            let result1 = await result.json()
+          
+            if (result1.status != false) {
+                return true
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+}
+export const getDengerousAPI = (_id,token) => {
+    return async (dispatch) => {
+        try {
+            let result = await fetch(`${api.DANGEROUS}/${_id}`,
+                {
+                    method: 'GET',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token':  token
+                      },
+                });
+            let listDanger = await result.json();
+            if (listDanger.status != false) {
+                return dispatch(getDengerous(listDanger))
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+
+export const getDengerous = (listDanger) => {
+    return {
+        type: action.GET_DANGEROUS,
+        listDanger,
     }
 }

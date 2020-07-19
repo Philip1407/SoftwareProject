@@ -79,23 +79,6 @@ class Browse extends Component {
           style={{ paddingVertical: theme.sizes.base * 2 }}>
           <Block flex={false} row space="between" style={styles.categories}>
             <TouchableOpacity
-              onPress={this.showMap}>
-              <Card center middle shadow style={styles.category}>
-                <Badge
-                  margin={[0, 0, 15]}
-                  size={50}
-                  color="rgba(41,216,143,0.20)">
-                  <Image source={logoMap} style={styles.img} />
-                </Badge>
-                <Text medium height={20}>
-                  MAP
-                  </Text>
-                <Text gray caption>
-                  follow
-                  </Text>
-              </Card>
-            </TouchableOpacity>
-            <TouchableOpacity
               onPress={() => navigation.navigate("Listen")}>
               <Card center middle shadow style={styles.category}>
                 <Badge
@@ -109,40 +92,6 @@ class Browse extends Component {
                   </Text>
                 <Text gray caption>
                   follow
-                  </Text>
-              </Card>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Dangerous")}>
-              <Card center middle shadow style={styles.category}>
-                <Badge
-                  margin={[0, 0, 15]}
-                  size={50}
-                  color="rgba(41,216,143,0.20)">
-                  <Image source={logoActivities} style={styles.img} />
-                </Badge>
-                <Text medium height={20}>
-                  Dangerous
-                  </Text>
-                <Text gray caption>
-                Dangerous
-                  </Text>
-              </Card>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={this.QuanLyTre}>
-              <Card center middle shadow style={styles.category}>
-                <Badge
-                  margin={[0, 0, 15]}
-                  size={50}
-                  color="rgba(41,216,143,0.20)">
-                  <Image source={logoActivities} style={styles.img} />
-                </Badge>
-                <Text medium height={20}>
-                  Thêm trẻ quản lý
-                  </Text>
-                <Text gray caption>
-                  Thêm trẻ quản lý
                   </Text>
               </Card>
             </TouchableOpacity>

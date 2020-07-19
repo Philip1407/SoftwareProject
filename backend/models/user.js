@@ -6,7 +6,7 @@ let userSchema = new mongoose.Schema({
     password: {type: String, require: true},
     Kids: String,
     role: {type:String, default:'Parents'},
-    path: []
+    path: [],
 }) 
 
 module.exports = mongoose.model('User', userSchema)

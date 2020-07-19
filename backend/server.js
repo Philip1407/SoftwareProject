@@ -20,7 +20,7 @@ app.use(passport.initialize())
 
 //Connect to MongoDB
 
-//'mongodb://localhost/mydatabase'
+// const uri ='mongodb://localhost/mydatabase'
 const uri ="mongodb://172.17.0.1:2717/mymongo"
 mongoose.connect(
   uri,

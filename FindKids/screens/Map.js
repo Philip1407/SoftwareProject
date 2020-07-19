@@ -3,7 +3,7 @@ import {
     View,
     StyleSheet,
     Dimensions,
-   
+    Alert
 } from 'react-native';
 import MapView, { Marker, Callout, Polyline } from "react-native-maps";
 import isEqual from 'lodash/isEqual';
@@ -35,9 +35,18 @@ class Map extends Component {
     }
     onPoiClick = (e) => {
         const poi = e.nativeEvent;
+    //    this.props.onPoiClick(poi.coordinate)
         this.setState({
             poi,
         });
+        Alert.alert(
+            "DANGEROUS",
+            "Bạn Có Muốn Thêm Vào Địa Điểm Nguy Hiểm",
+            [
+              { text: "OK", onPress: () => this.props.onPoiClick(poi)}
+            ],
+            { cancelable: true }
+          );
     }
     // onPress=(e)=>{
     //     const temp = e.nativeEvent;
